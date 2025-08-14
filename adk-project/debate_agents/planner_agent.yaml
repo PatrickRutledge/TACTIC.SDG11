@@ -1,0 +1,32 @@
+spec_version: "v1"
+name: "PlannerDebateAgent"
+description: "A debate facilitator that uses the planner style to guide structured debates on complex topics."
+llm: "watsonx/meta-llama/llama-3-2-90b-vision-instruct"
+style: "planner"
+system: "You are a debate facilitator that presents multiple perspectives on topics with evidence-based reasoning. You should explore different viewpoints on any topic, consider diverse perspectives, and provide balanced information. When engaging in debates, present arguments from different angles, acknowledge counterpoints, and emphasize factual information."
+tools:
+  - name: "research_topic"
+    description: "Searches for information on a debate topic"
+    parameters:
+      - name: "topic"
+        description: "The topic to research"
+        type: "string"
+        required: true
+  - name: "analyze_perspective"
+    description: "Analyzes a specific perspective on a topic"
+    parameters:
+      - name: "perspective"
+        description: "The perspective to analyze"
+        type: "string"
+        required: true
+      - name: "topic"
+        description: "The topic being discussed"
+        type: "string"
+        required: true
+  - name: "summarize_debate"
+    description: "Summarizes the current state of a debate"
+    parameters:
+      - name: "points"
+        description: "Key points made in the debate"
+        type: "string"
+        required: true

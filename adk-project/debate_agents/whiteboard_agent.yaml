@@ -1,0 +1,115 @@
+spec_version: v1
+kind: native
+name: WhiteboardAgent
+description: An agent that facilitates visual mapping and development of a user's viewpoint through an interactive whiteboard session.
+context_access_enabled: true
+context_variables: []
+llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
+style: default
+collaborators: []
+tools: []
+knowledge_base: []
+
+system: "You are the WhiteboardAgent, designed to help users visually map and develop their viewpoints on various topics. You create a virtual whiteboard experience where users can see their thoughts organized visually. Your approach is supportive, organized, and clarifying. You help users see connections between different aspects of their perspective and identify areas that could be further developed.
+
+You have the following characteristics:
+- Visual Thinking: You excel at transforming abstract thoughts into visual representations
+- Organization: You help structure ideas into coherent frameworks
+- Analytical: You identify patterns, gaps, and connections in viewpoints
+- Supportive: You encourage users to expand their thinking without judgment
+
+Your goals are to:
+1. Create a visual map of the user's viewpoint based on their previous conversation
+2. Help identify core components, supporting evidence, and potential weaknesses
+3. Guide the user in developing their perspective more fully
+4. Provide a structured representation that the user can use to better understand and articulate their own thinking"
+
+steps:
+  - name: introduction
+    type: message
+    message: "Welcome to your Whiteboard Session! Based on your conversation with the ViewpointExplorer, I'll help you visually map and develop your viewpoint on {{ context.topic }}. I'll start by creating a visual organization of your thoughts, and then we can refine and expand it together."
+  
+  - name: initial_map
+    type: message
+    message: "Here's an initial map of your viewpoint:\n\n[WHITEBOARD]\n* CENTRAL TOPIC: {{ context.topic }}\n* YOUR VIEWPOINT: {{ context.viewpoint }}\n* SUPPORTING EVIDENCE:\n  - {{ context.evidence }}\n* POTENTIAL COUNTERARGUMENTS: [To be developed]\n* UNDERLYING VALUES: [To be identified]\n[/WHITEBOARD]\n\nWhat do you think of this initial organization? What would you like to add or modify?"
+  
+  - name: refine_map
+    type: question
+    question: "Would you like to refine a specific section of the map? You can choose: 1) Your Viewpoint, 2) Supporting Evidence, 3) Potential Counterarguments, 4) Underlying Values, or 5) Continue with the current map."
+  
+  - name: refinement_prompt
+    type: prompt
+    prompt: "Please select a section to refine or provide additional information."
+    default: "I didn't quite understand your selection. Could you choose one of the numbered options or tell me which section you'd like to work on?"
+    if:
+      - condition: "response == '1' || response contains 'viewpoint'"
+        then:
+          - name: refine_viewpoint
+            type: question
+            question: "Let's refine your core viewpoint on {{ context.topic }}. Can you elaborate on your perspective or break it down into more specific components?"
+      
+      - condition: "response == '2' || response contains 'evidence' || response contains 'support'"
+        then:
+          - name: refine_evidence
+            type: question
+            question: "Let's add more supporting evidence for your viewpoint. What additional facts, examples, or experiences strengthen your perspective?"
+      
+      - condition: "response == '3' || response contains 'counter' || response contains 'against'"
+        then:
+          - name: identify_counterarguments
+            type: question
+            question: "Let's identify potential counterarguments to your viewpoint. What might someone with a different perspective say to challenge your position?"
+      
+      - condition: "response == '4' || response contains 'values' || response contains 'underlying'"
+        then:
+          - name: identify_values
+            type: question
+            question: "Let's identify the underlying values that inform your viewpoint. What core principles, beliefs, or priorities shape your perspective on {{ context.topic }}?"
+      
+      - condition: "response == '5' || response contains 'continue' || response contains 'current'"
+        then:
+          - name: continue_with_map
+            type: message
+            message: "Great! Let's continue with the current map structure."
+  
+  - name: update_map
+    type: message
+    message: "I've updated your viewpoint map based on our discussion:\n\n[WHITEBOARD]\n* CENTRAL TOPIC: {{ context.topic }}\n* YOUR VIEWPOINT: {{ context.viewpoint }} {{ context.refined_viewpoint }}\n* SUPPORTING EVIDENCE:\n  - {{ context.evidence }} {{ context.additional_evidence }}\n* POTENTIAL COUNTERARGUMENTS:\n  - {{ context.counterarguments }}\n* UNDERLYING VALUES:\n  - {{ context.values }}\n[/WHITEBOARD]"
+  
+  - name: identify_connections
+    type: message
+    message: "Now, let's identify connections between different elements of your viewpoint. I notice some interesting relationships between your core position, evidence, and values."
+  
+  - name: connections_question
+    type: question
+    question: "How do you think your underlying values connect to your supporting evidence? Are there any interesting relationships between different aspects of your viewpoint?"
+  
+  - name: gaps_identification
+    type: message
+    message: "Based on our mapping so far, I've identified some potential areas for further development in your viewpoint:"
+  
+  - name: gaps_question
+    type: question
+    question: "Which of these areas would you like to develop further: 1) Strengthening your evidence, 2) Addressing potential counterarguments, 3) Clarifying your underlying values, or 4) Making your core viewpoint more precise?"
+  
+  - name: final_map
+    type: message
+    message: "Here's the final visualization of your viewpoint on {{ context.topic }}:\n\n[WHITEBOARD]\n* CENTRAL TOPIC: {{ context.topic }}\n* YOUR VIEWPOINT: {{ context.viewpoint }} {{ context.refined_viewpoint }}\n* SUPPORTING EVIDENCE:\n  - {{ context.evidence }} {{ context.additional_evidence }}\n* POTENTIAL COUNTERARGUMENTS:\n  - {{ context.counterarguments }}\n* UNDERLYING VALUES:\n  - {{ context.values }}\n* CONNECTIONS:\n  - {{ context.connections }}\n* AREAS FOR DEVELOPMENT:\n  - {{ context.development_areas }}\n[/WHITEBOARD]"
+  
+  - name: export_option
+    type: question
+    question: "Would you like me to provide a text summary of your viewpoint map that you can save for future reference?"
+    if:
+      - condition: "response contains 'yes' || response contains 'sure' || response contains 'please'"
+        then:
+          - name: text_summary
+            type: message
+            message: "# Summary of Your Viewpoint on {{ context.topic }}\n\n## Core Viewpoint\n{{ context.viewpoint }} {{ context.refined_viewpoint }}\n\n## Supporting Evidence\n- {{ context.evidence }} {{ context.additional_evidence }}\n\n## Potential Counterarguments\n- {{ context.counterarguments }}\n\n## Underlying Values\n- {{ context.values }}\n\n## Key Connections\n- {{ context.connections }}\n\n## Areas for Further Development\n- {{ context.development_areas }}"
+  
+  - name: satisfaction_check
+    type: question
+    question: "How helpful was this whiteboard session in developing your viewpoint? Is there anything else you'd like to explore about {{ context.topic }}?"
+  
+  - name: closing
+    type: message
+    message: "Thank you for exploring your viewpoint on {{ context.topic }} through this whiteboard session. You now have a more structured understanding of your perspective, including supporting evidence, potential counterarguments, and underlying values. Feel free to use this map as a reference when discussing this topic in the future. Would you like to return to the ViewpointExplorer or conclude our session?"

@@ -1,0 +1,88 @@
+{
+  "command-base": {
+    "error-copying-from-temp-stepzen-workspace": "Failed to copy the results from a temp folder back to your workspace: {{details}}",
+    "error-create-temp-stepzen-workspace": "Failed to create a temp folder to run the command: {{details}}",
+    "error-current-dir-not-a-workspace": "Could not find a Flows Engine workspace in the current directory.",
+    "error-dir-not-a-workspace": "Could not find a Flows Engine workspace in the {{directory}} directory.",
+    "error-login-required": "Cannot proceed without a valid login. Please login to your Flows Engine environment by running {bold wxflows login}.",
+    "flag-description-help": "Show CLI help",
+    "flag-description-non-interactive": "Disable all interactive prompts",
+    "please-log-in": "Please login to your Flows Engine environment.",
+    "please-run-init": "Please run {bold wxflows init{{flags}}} once to create it.",
+    "using-workspace-in-dir": " ⤴️  Using the Flows Engine workspace in {blue {{directory}}}",
+    "welcome-to-cli": "Welcome to the Flows Engine CLI!"
+  },
+  "import": {
+    "imported-successfully": "{green Successfully imported a {bold {{source}}} data source into your GraphQL schema}",
+    "imported-unknown-successfully": "{green Successfully imported a new data source into your GraphQL schema}",
+    "error-adding-tools-graphql-file": "Failed to create a {bold tools.graphql} placeholder: {{details}}."
+  },
+  "import-tool": {
+    "command-description": "Import a tool into your Flows Engine workspace.",
+    "flag-description-dir": "Working directory [default: current directory]",
+    "flag-help-value-dir": "DIRECTORY",
+    "error-uri-file-not-found": "Failed to open the local file {{file}}. Please make sure that the path is correct and you have read access to this file.",
+    "error-uri-not-ok-http-status": "Failed to download the tool from {{url}}. Got an HTTP status {{status}}.",
+    "error-uri-null-response-body": "Failed to download the tool from {{url}}. Got an empty response body.",
+    "imported-successfully": "{green Successfully imported a {bold {{name}}} tool into your Flows Engine workspace}",
+    "imported-successfully-list": "{green Successfully imported {{count}} tools into your Flows Engine workspace: {{names, list}}}",
+    "imported-none": "No tools were imported"
+  },
+  "init": {
+    "command-description": "Initialize a Flows Engine workspace in the current directory.",
+    "created-successfully": "Created a Flows Engine workspace in {{directory}}",
+    "error-cannot-parse-config-file": "Cannot parse configuration from {{filepath}}",
+    "error-directory-already-a-workspace": "This directory is already a Flows Engine workspace: {{directory}}. Please select a different directory.",
+    "error-explicit-home-directory-not-supported": "Using the home directory as a Flows Engine workspace is not supported. Please select a different directory.",
+    "error-failed-to-create-workspace": "Failed to create a Flows Engine workspace in {{directory}}",
+    "error-implicit-home-directory-not-supported": "Using the home directory as a Flows Engine workspace is not supported. Please cd into a different directory or add a {bold --dir} flag.",
+    "flag-description-dir": "Directory for a new workspace [default: current directory]",
+    "flag-description-endpoint": "Endpoint name (e.g. api/myapp)",
+    "flag-help-value-dir": "DIRECTORY",
+    "flag-help-value-endpoint": "MY/ENDPOINT",
+    "q-endpoint-name": "What would you like your endpoint to be called?",
+    "q-workspace-name": "What would you like to call your workspace?"
+  },
+  "deploy": {
+    "command-description": "Deploy to Flows Engine.",
+    "error-no-aicore-bundled": "No aicore schema found in the catalog file. Please reinstall the wxflows CLI.",
+    "error-catalog-not-found": "No catalog file found. Please reinstall the wxflows CLI.",
+    "error-catalog-unzip-parse-failure": "Failure during unzip and parse of the catalog file. Please reinstall the wxflows CLI.",
+    "error-importing-aicore": "Failed to add the aicore schema into the workspace: {{details}}. Please reinstall the wxflows CLI.",
+    "flag-description-dir": "Working directory [default: current directory]",
+    "flag-help-value-dir": "DIRECTORY"
+  },
+  "login": {
+    "command-description": "Log in to Flows Engine.",
+    "flag-description-environment": "Flows Engine environment name (copy from https://wxflows.ibm.stepzen.com). If not provided, the CLI prompts the users to enter one.",
+    "flag-help-value-environment": "ENVIRONMENT",
+    "flag-description-adminkey": "Admin key (copy from https://wxflows.ibm.stepzen.com). If not provided, the CLI prompts the users to enter one.",
+    "flag-help-value-adminkey": "ADMIN-KEY",
+    "flag-description-introspection": "Override the default Flows Engine introspection service URL for all {bold wxflows import} commands. If not provided, use the default introspection URL.\n\nExample:\nwxflows login --introspection introspection.mydomain.com",
+    "flag-help-value-introspection": "INTROSPECTION-URL",
+    "arg-description-domain": "Domain of the Flows Engine service to login to (e.g. {bold us-east-a.ibm.stepzen.net} or {bold eu-central-a.ibm.stepzen.net}). Check your domain at https://wxflows.ibm.stepzen.com"
+  },
+  "tools-list": {
+    "command-description": "List deployed tools.",
+    "flag-description-dir": "Flows Engine workspace [default: current directory]",
+    "flag-help-value-dir": "DIRECTORY",
+    "flag-description-endpoint": "Deployed Flows Engine endpoint (e.g. {bold api/endpoint})",
+    "flag-help-value-endpoint": "ENDPOINT",
+    "fetching-tools-action": "Fetching the tool list from {yellow {{endpoint}}}",
+    "fetching-tools-fail": "{red fail}",
+    "fetching-tools-done": "{dim done}",
+    "unknown-fetch-error": "failed to fetch tools",
+    "no-tools": "No tools currently deployed. See {code wxflows import --help} for more information about adding tools.",
+    "tool-prop-name": "Name",
+    "tool-prop-description": "Description",
+    "tool-prop-parameters": "Parameters",
+    "no-description": "(none)",
+    "no-parameters": "(none)",
+    "parameter-prop-name": "Name",
+    "parameter-prop-description": "Description",
+    "parameter-prop-type": "Type"
+  },
+  "whoami": {
+    "not-implemented-yet": "Not implemented yet :("
+  }
+}

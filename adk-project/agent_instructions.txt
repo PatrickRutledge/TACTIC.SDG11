@@ -1,0 +1,1982 @@
+Core components of an agent
+Each agent is built from five key components that define its identity, capabilities, and behavior:
+Profile: Represents the agent's identity, including its name, role, and purpose. This sets the context for how it should behave and respond.
+Knowledge: The data and information the agent can access to answer questions or perform tasks.
+Toolset: A collection of tools the agent uses to process inputs, make decisions, or interact with systems.
+Behavior: Defines how the agent acts and responds, based on its profile, knowledge, and tools.
+Channels: Connects your agent to the communication platforms (for example, Slack) where the agent is available to users.
+Orchestration of agents
+In watsonx Orchestrate, agents can collaborate with other agents and tools to complete tasks more effectively.
+Collaboration: Agents can call on other agents (collaborators) to handle specific tasks, improving flexibility and performance.
+Routing: watsonx Orchestrate uses description-based routing to decide which agent or tool to use based on their descriptions. By adding a detailed description to your agent, you help watsonx Orchestrate efficiently manage and coordinate the collaboration between agents. See Recommendations for agent descriptions for more details.
+Execution order: The collaborator agents on watsonx Orchestrate are run sequentially. The tasks are completed in a specific order, ensuring that dependencies are respected and resources are used efficiently.
+Scalability: There’s no hard limit on the number of collaborators or tools, but a smaller, well-described toolset improves routing accuracy and system performance.
+Change handling
+Draft environment: When you edit an agent, the changes are immediately reflected in the draft environment, allowing you to test and verify the updates before deploying. However, these changes do not propagate to other agents using it as a collaborator until the edited agent is deployed in the live environment.
+Live environment: Changes that you make on an agent take effect in the live environment only after the agent is deployed. Any modifications that you make to an agent in the draft environment will not be visible in the live environment until your agent is deployed.
+Isolated changes: Editing one agent does not automatically update other agents using it as a collaborator; collaborator agents will only see the changes once the edited agent is deployed.
+Design considerations
+Performance: A large toolset can slow down routing and increase complexity. Keep it lean and purposeful.
+Validation: Always test agents individually before using them as collaborators to avoid unexpected behavior.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=agents-agent-creation-specifications> 
+
+Recommendations for agent descriptions
+Last Updated: 2025-08-14
+Agent descriptions play a critical role in helping the AI system understand what each agent does and when to use it. A well-written description acts like a guidepost. It helps the system interpret user intent and route the request to the most appropriate agent.
+When a user asks a question or makes a request, the system uses the agent descriptions to:
+• Identify the user's intent
+• Match it with the right agent
+• Ensure accurate and efficient task handling
+For example, if a user wants to book a flight, the system can route the request to a travel agent that specializes in trip planning, flight booking, and accommodation search, but only if the description clearly communicates the capability.
+What to include in an agent description
+To make your agent descriptions effective, consider the following key elements to help the AI system effectively choose the best agent for your users:
+1. Domain expertise
+	• Clearly outline what the agent specializes in (e.g., HR, IT support, finance).
+	• Use relevant keywords that reflect the agent’s area of focus.
+	• This helps the system categorize the agent and match it with related user queries.
+2. Features and strengths
+	• Highlight what the agent can do, its core functions and unique capabilities.
+	• Think about the user’s intent and how the agent addresses it.
+	• This helps the system determine if the agent is the best fit for the task.
+3. Limitations and scope
+	• Be transparent about what the agent can’t do or isn’t designed for.
+	• This prevents misrouting and sets the right expectations for users.
+	• It also helps the system avoid assigning tasks outside the agent’s scope.
+4. Clear and simple language
+	• Use simple, straightforward language.
+	• Avoid jargon or overly technical terms unless necessary.
+	• This ensures the AI system can easily parse and understand the description.
+Example:
+Employee Support is an agent that simplifies Human Resources (HR) tasks, from onboarding to offboarding. It understands and responds to a wide range of HR inquiries, which include: populating HR software systems, running workflows, validating local holidays, and generating vacation reports. This tool has the following limitations: not a substitute for legal advice, not specialized on candidate sourcing and screening.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=agents-recommendations-agent-descriptions> 
+
+Choosing a style for your agent
+Last Updated: 2025-07-24
+When you build an agent in the agent builder, you need to choose how it will follow instructions and behave during tasks. This is called the reasoning style of the agent. It defines how the agent understands your requests, makes decisions, and uses tools to complete tasks.
+Following are the reasoning styles available:
+• Default
+• ReAct
+• Planner
+Each style supports different levels of control, flexibility, and task complexity.
+Default style
+Use this style when you want the agent to follow instructions exactly as given. available to it.
+How it works:
+	• The default style uses the built-in reasoning capabilities of its underlying language model to understand your prompt, determine the best action, and make use of the tools
+Ideal for:
+	• Quick and works well for straightforward tasks.
+	• Scenarios where the logic is linear and no contextual refinement is needed.
+Examples:
+	• Get the latest report.
+	• Check the ticket status.
+	• Obtaining status updates (for example, ticket status).
+ReAct style
+Use this style when your task needs more thought or multiple steps. ReAct is a method that lets language models think through problems and take actions step by step, helping them solve tasks more accurately and reliably by combining reasoning with real world interactions.
+How it works:
+	• Breaks the task into smaller parts.
+	• Thinks through each step before acting.
+	• Adjusts its actions based on what it learns along the way.
+	• Might ask for confirmation or suggest changes before continuing.
+Best for:
+	• Tasks that require logic, decisions, or tool coordination.
+	• Scenarios where you want to see how the agent thinks.
+Examples:
+	• Summarize this support case and suggest next steps.
+	• Compare two reports and highlight key differences.
+Planner style
+The Planner style lets you define exactly how the agent should behave and format its responses. It requires setup using the Agent Development Kit (ADK). For more information on configuring the style of your agent by using ADK, see Agent styles 
+.
+Setting the style in UI
+	1. In the Profile section, go to Agent style.
+	2. Choose Default or ReAct based on your desired agent style.
+	3. If the style is locked with a Agent style set from ADK notification, it indicates a configuration made in the ADK and cannot be changed in the UI.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=agents-choosing-style-your-agent> 
+
+Adding knowledge to agents
+Last Updated
+: 2025-08-14
+Adding knowledge to agents is essential for enhancing their conversational intelligence. By equipping agents with relevant information, you enable them to deliver accurate, context-aware, and useful responses tailored to specific business scenarios. You can enrich an agent’s knowledge in the following ways:
+
+External content repository integration: Connect to systems like Milvus, Elasticsearch, or a custom service to access and retrieve the content dynamically.
+
+Direct file upload: Add documents directly to the agent’s internal knowledge base.
+
+A content repository is a centralized system where documents, files, and structured data are stored. It acts as a knowledge source for agents, enabling them to search and respond based on the information available. Whether you choose to upload files directly to the agent's knowledge base or connect to an external repository like Milvus, Elasticsearch, or a custom service depends on your specific needs and goals for your business use cases.
+
+Before you begin
+If you want to use Milvus, Elasticsearch, or a custom service as a content repository, contact your IT administrator for the connection details. For more information about how to set up the connection, see Connecting to external content repositories.
+
+Knowledge supports integration with external content repositories such as Milvus, Elasticsearch, and custom services, with language support for English, Spanish, French, German, and Brazilian Portuguese, enabling agents to retrieve, process, and respond to queries using content stored in these languages.
+
+Customizing knowledge settings
+You can fine-tune how your agent uses search results to respond to user prompts by adjusting the knowledge settings. These settings enable you to set the confidence levels, response length, fallback message and number of citations shown in the chat.
+
+Steps to edit knowledge settings
+
+Go to the Knowledge section and click Edit knowledge settings.
+Customize the following options to refine your agent’s behavior:
+Set the confidence threshold for retrieval
+Adjust the length of generated responses
+Set the confidence threshold for responses
+Set a message when no answer is found
+Configure the number of citations shown
+Click Save to apply your changes.
+Confidence thresholds for retrieval and responses
+Confidence thresholds determine how likely the agent is to use information from the knowledge database when responding to user queries. These thresholds are based on scores that reflect the agent’s certainty about the relevance and accuracy of the retrieved data.
+
+You can configure two types of thresholds:
+
+Retrieval confidence threshold: Controls how confident the agent must be that the retrieved data is relevant before using it.
+
+Response confidence threshold: Controls how confident the agent must be that the generated response is accurate and useful.
+
+Each threshold can be set to one of the following levels:
+
+Lowest: The agent frequently uses knowledge base results, even with low confidence.
+Low: The agent often uses results, but with slightly more caution.
+High: The agent uses results less frequently, requiring higher confidence.
+Highest: The agent rarely uses results unless confidence is very high.
+Adjusting the length of the generated response
+You can control how detailed your agent’s responses are by selecting a preferred response length:
+
+Concise: Short and direct answers, ideal for simple queries.
+Moderate (default): Balanced responses with enough detail for general use.
+Verbose: In-depth responses suitable for complex or exploratory queries.
+Set a message when no answer is found
+When your agent is unable to generate a suitable response to a user's query, either because the knowledge base doesn't contain relevant information or the confidence thresholds you've set aren't met, you can configure a fallback message. This message will be displayed to the user, ensuring a smooth and informative experience even when an answer isn't available.
+
+Examples of fallback messages:
+
+"I couldn’t find an answer to your question. Please try rephrasing it."
+
+"Sorry, I don’t have enough information to respond right now."
+
+Setting the number of citations your agent shows
+When your agent uses uploaded documents as knowledge sources, it can display citations in the chat to help users verify the information. These citations reference the sources used to generate the response.
+
+To configure how many citations are shown:
+
+In the Knowledge section, click Edit knowledge settings.
+Under Number of citations shown, select a number to determine how many citations or references the agent can provide in its response.
+Click Save.
+Focus sentinel
+Note
+This setting affects only the number of citations shown in the chat, not the number used to generate the response.
+Focus sentinel
+Knowledge source
+A knowledge source refers to the origin of the information that your agent uses to understand and respond to user queries. You can enrich your agent’s capabilities by adding knowledge from two types of sources:
+
+Connected content repositories: These are external repositories like Milvus, Elasticsearch, or a custom service that store large volumes of structured or unstructured data. By connecting to these repositories, your agent can dynamically retrieve and use up-to-date information during conversations.
+
+Uploaded files: These are documents that you upload directly into the agent’s internal knowledge base. This method is ideal for static, curated content that doesn’t change frequently.
+
+Using a knowledge source ensures your agent can deliver accurate, context-aware, and relevant responses based on the content you provide or connect. The choice between uploading files and integrating with a repository depends on your content management needs, scalability goals, and how frequently your data changes.
+
+Connecting to external content repositories
+To connect your agent to an external content repository, follow the setup guide that matches the type of repository you're using:
+
+Connecting to a Milvus content repository.
+Connecting to an Elasticsearch content repository.
+Connecting to a custom content service.
+Uploading files to the agent
+You can enhance your agent’s knowledge by uploading documents directly to its internal knowledge base. This method is ideal for quick setup and static content. Before you begin, make sure you meet the following requirements:
+
+Supported file types and limits
+Each file must have a unique name.
+You can upload up to 20 files per batch, with a total size limit of 30 MB.
+Maximum file sizes:
+.docx, .pdf, .pptx, .xlsx: 25 MB
+.csv, .html, .txt: 5 MB
+If you're using CSV files from Excel, save them in UTF-8 format before uploading.
+Focus sentinel
+Note
+This feature is not supported in the On-premises deployment.
+Focus sentinel
+Steps to upload files
+Follow the steps to upload documents as knowledge:
+
+Go to the Knowledge section and click Choose knowledge + > Upload files.
+Either click the link in the upload box or drag and drop your files into it. Then click Next.
+Add a Description to help the agent understand the content and click Save. For tips, see Creating knowledge descriptions.
+Once uploaded, the Start by adding knowledge box is replaced with a list of your files and the description you provided.
+To add more files, click Upload files.
+To remove a file, click the trash icon next to the file name.
+Switching content repositories
+You can change the content repository connected to your agent at any time—whether you're moving from uploaded files to an external system like Milvus or Elasticsearch, or switching between external services. However, this action comes with important considerations:
+
+Existing configurations will be lost: Switching repositories deletes all previously uploaded files, indexing details, and any custom settings tied to the current knowledge source.
+Data cannot be recovered: Once deleted, the previous repository’s content and configurations cannot be restored.
+Backup is essential: Before switching, back up your files and document any important settings or descriptions to avoid losing valuable information.
+How to switch repositories
+
+If a different knowledge source is already connected, the Choose knowledge + button will not be visible. To switch:
+
+Click Change source.
+Select your new content repository.
+Confirm the action by clicking I understand.
+Focus sentinel
+Note
+This action permanently deletes the previous repository’s details and files.
+Focus sentinel
+Storing your data
+When you upload files or documents directly to the agent, your data is stored securely in an IBM Cloud data center located in a specific region. However, there are a few exceptions based on where and how you're using the service:
+
+If you're using watsonx Orchestrate in IBM Cloud, your data stays in the same IBM Cloud data center where your environment is hosted.
+If you're usingwatsonx Orchestrate on AWS, your data is stored in an IBM Cloud region that is geographically closest to your AWS region.
+Focus sentinel
+Note
+If your environment is hosted in AWS Mumbai, your data remains in AWS Mumbai and is not transferred to an IBM Cloud region.
+Focus sentinel
+To help you understand where your data goes, here’s a quick reference table mapping watsonx Orchestrate AWS regions to the IBM Cloud regions:
+
+watsonx Orchestrate on AWS
+Your uploaded data on IBM Cloud
+us-east-1 (North Virginia)	us-east (Washington D.C)
+eu-central-1 (Frankfurt)	eu-de (Frankfurt)
+ap-southeast-1 (Singapore)	jp-tok (Tokyo)
+Creating knowledge descriptions
+When uploading documents to your agent’s knowledge base, include a clear and informative description. This helps the agent understand and interpret the data, and decide whether to use the knowledge in its responses or rely on another method, such as calling a tool or using the large language model (LLM).
+
+Tips for writing effective descriptions
+
+Be specific: Describe the type of content and the kinds of queries it supports.
+Use simple language: Avoid jargon and keep sentences straightforward.
+Include keywords: Add terms users are likely to search for.
+Keep it updated: Revise descriptions as content or capabilities evolve.
+Here is an example knowledge description for HR policies:
+
+"This knowledge base includes HR policies, employee handbooks, and guidelines on benefits, leave, and performance management. It supports queries like 'What is the parental leave policy?' and 'How do I apply for remote work?' Keywords: leave policy, remote work, benefits, performance review, onboarding."
+
+Adding agents for orchestration
+Last Updated: 2025-08-14
+Agents in IBM watsonx Orchestrate can collaborate using multi-agent orchestration to complete tasks across various channels. You can add multiple collaborator agents from various sources, such as prebuilt and custom agents built by IBM and your team, agents from third-party platforms and watsonx.ai, and AI assistants from IBM watsonx Assistant instances.
+Collaborator agents are computational systems where multiple autonomous agents interact or work together to complete specific tasks or achieve common goals. These agents can learn reasoning and decision-making.
+Adding collaborator agents helps you to have domain-focused agents that are designed to operate within a specific field or industry. These agents possess deep knowledge and expertise in their respective domains, which allows them to complete tasks more efficiently and accurately.
+With collaborator agents, you can:
+• Divide tasks among multiple agents to complete complex tasks more efficiently than a single large system.
+• Scale by adding agents to handle more tasks or larger workloads.
+• Enable the system to handle a broader range of tasks and adapt to changing conditions by leaving agents to carry out tasks independently.
+• Gather insights from employee or customer communication, so agents can build upon key ideas for better performance.
+Planning agents for collaboration and orchestration
+Agents with collaborator agents operate independently and decide based on local information and interactions without a central authority.
+An agent can have collaborators, and those collaborators can also have their own collaborators. This collaboration creates a network of interconnected agents. The initial agent can call upon all these collaborator agents to delegate the task execution to one another.
+Using collaborator agents effectively requires careful planning and implementation:
+Define clear objectives: Clearly define what you want to achieve with collaborator agents. Whether it's improving customer service, optimizing supply chains or enhancing data analysis, having specific goals to guide the implementation process.
+Design the system: Plan the multi-agent system, including the roles and capabilities of each agent.
+Choose the right agents: Choose agents that are suited to the tasks at hand. Consider their capabilities, compatibility with existing systems, and how they can be integrated into your workflows.
+Foster human-agent collaboration: Promote a culture where human employees and agents work together seamlessly.
+Plan for scalability: Ensure that your multi-agent system can scale as your business grows, which include you to be able to add more agents or expand their capabilities without significant overhauls.
+Adding a collaborator agent
+	1. On the agent edit page, click Toolset > Add agent.
+	2. Choose from where you want to add the agent:
+		1. Add from the catalog.
+		2. Add from local instance.
+		3. Import from external sources.
+Adding an agent from the catalog
+You can add an agent from the catalog from the catalog. This interface allows you to browse, search, and select from a variety of available agents, including both prebuilt and partner external agents.
+Prebuilt agents: These are ready-to-use agents designed for common scenarios and tasks. They come with predefined configurations and capabilities, making it easy to integrate them into your workflows without extensive setup. See List of prebuilt agents for more details.
+External agents from partners: These agents are developed outside watsonx Orchestrate and made available in the catalog by the providers. They offer flexibility and customization for specialized use cases. See External agents for more details.
+Adding an agent from local instance
+Adding an agent from local instance opens a view of the agents that the members of your watsonx Orchestrate instance created. Search and select one or more agents, and click Add to agent to finish.
+The external agents that the members of the instance connect are shared across all users within the same instance.
+Adding an agent from external platforms
+Important: External agents can be used as collaborator agents only. The connections established to external agents are available within the local instance, so you can reuse them in other agents.
+Adding a partner external agent from catalog
+To add an external agent provided by partners as a collaborator agent:
+	1. In the agent builder page, go to Toolset > Add agent > Add from catalog.
+	2. Select the external agent from the catalog view.
+	3. Click Add as collaborator.
+	4. In the Register your agent page, specify the Authentication type, select Bearer token or API key:
+		○ In the Bearer token, enter the Bearer token.
+		○ In the API key, enter the API key.
+	5. In the Service instance URL, enter the URL to connect to the server where the external AI agent is hosted.
+	6. In the Display name, enter the display name of the agent.
+	7. In the Description of agent capabilities, enter a description of what it can do to help your users. The description must contain the most used keywords that enable the system to determine the better agent that helps the users. For guidance on writing descriptions, see the Recommendations for agent descriptions section.
+	8. Click Register and add.
+Importing agents from external platforms
+From the agent edit page, click Toolset > Add agent > Import, then select the type of agent that you want to register, and click Next:
+	1. External agent
+Add agents from third-party platforms or from watsonx.ai as a collaborator agent:
+		○ Adding agents from third-party platforms
+		○ Adding agents from watsonx.ai
+	2. IBM watsonx Orchestrate assistant
+Add the watsonx Orchestrate assistants that you publish from the IBM watsonx Orchestrate product as a collaborator agent.
+		○ Adding IBM watsonx Orchestrate assistants as collaborator agents
+	3. External watsonx Assistant
+Add the AI assistants that you publish from the IBM watsonx Assistant product or the AI assistant builder as a collaborator agent:
+		○ Adding AI assistants from IBM watsonx Assistant as agents
+Add an external agent using the Agent development kit (ADK):
+	1. You can use the ADK to designate an external A2A agent as a collaborator for native agents.
+		○ Adding external A2A agents using ADK
+Adding agents from third-party platforms
+Add agents from third-party platforms as a collaborator agent:
+	1. From Provider, select External agent.
+	2. In the Authentication type, select Bearer token or API key:
+		○ In the Bearer token, enter the Bearer token.
+		○ In the API key, enter the API key.
+You get the authentication data from the platform where the external AI agent is hosted.
+	3. In the Service instance URL, enter the URL to connect to the server where the external AI agent is hosted.
+	4. In the Display name, enter the display name of the agent.
+	5. In the Description of agent capabilities, enter a description of what it can do to help your users. The description must contain the most used keywords that enable the system to determine the better agent that helps the users. For guidance on writing descriptions, see the Recommendations for agent descriptions section.
+	6. Click Import agent.
+Adding agents from watsonx.ai
+Add agents from Agent Lab in watsonx.ai as collaborator agents.
+Requirements
+Comply with the following requirements to add agents from watsonx.ai:
+	• You must have access to IBM Cloud and IBM watsonx.ai.
+	• Create an agent through the Agent Lab in watsonx.ai and deploy the agent as an AI service. For more information about how to create agents, see Getting started with Agent Lab in the IBM watsonx as a Service documentation.
+Getting the public endpoint from watsonx.ai
+Get the public endpoint to connect to a deployed agent:
+	1. In the watsonx.ai home screen, click the menu > Deployments.
+	2. Click the deployed agent, and go to the API reference tab.
+	3. In the Public endpoint, select the endpoint that has "ai_service_stream" as part of the URL path. For instance, the endpoint looks like "https://us-south.ml.cloud.ibm.com/ml/v4/deployments/{deploymment_id}/ai_service_stream?version=2021-05-01".
+	4. Save this public endpoint.
+Creating the API key
+Create an API key for your deployed agent as an AI service. For more information about how to create and manage your API key, see Creating an API key in the console in Managing your account, resources, and access for IBM Cloud.
+Save the API key.
+Adding the agent as a collaborator
+Add agents from watsonx.ai as a collaborator agent in the agent builder:
+	1. From Provider, select watsonx.ai.
+	2. In the Authentication type, select API key.
+	3. In the API key, enter the API key that you saved.
+	4. In the Service instance URL, enter the public endpoint that you copied from deployed agent within watsonx.ai.
+	5. In the Display name, enter the display name of the agent.
+	6. In the Description of agent capabilities, enter a description of what it can do to help your users. The description must contain the most used keywords that enable the system to determine the better agent that helps the users. For guidance on writing descriptions, see the Recommendations for agent descriptions section.
+	7. Click Import agent.
+Adding IBM watsonx Orchestrate assistants as collaborator agents
+Add assistants from IBM watsonx Orchestrate as collaborator agents:
+	1. From Available assistants, select the assistant you want to use as a collaborator.
+	2. Type a new Display name for your collaborator agent.
+Agent collaborator names must be unique and meet the following criteria:
+		○ The name must be at least 3 characters long and no more than 128 characters.
+		○ The name can include letters, digits, hyphens (-), and underscores (_), but it cannot start with a digit.
+		○ The same name cannot be reused on another collaborator agent.
+	3. In Description, enter a description of what the assistant can do to help your users. The description must contain the most used keywords that enable the system to determine the better agent that helps the users. For guidance on writing descriptions, see the Recommendations for agent descriptions section.
+	4. Click Import agent.
+Adding AI assistants as agents
+The option to add AI assistants as collaborator agents is limited to:
+	• AI assistants that you publish from an instance of the IBM watsonx Assistant product.
+	• AI assistants that you publish from the AI assistant builder.
+Important: If you want to add AI assistants from the AI assistant builder, the AI assistant must meet the following prerequisites:
+		○ It must be hosted on IBM watsonx Orchestrate on IBM Cloud. Adding AI assistants from IBM watsonx Orchestrate on AWS is not supported.
+		○ It must be sourced from instances other than the instance that you use to build the agent.
+Add an AI assistant as a collaborator agent in the agent builder:
+	1. In the API key, enter the API key to connect to your instance. From the IBM Cloud console, search for your IBM watsonx Assistant service, and click it. In the Credentials section, copy the value from the API key field.
+	2. In the Environment ID, enter the environment ID of the AI assistant. You can use the draft or the live environment of the AI assistant that you want to call through the AI agent.
+	3. In the Version, enter the minor API version that you want to use when calling the AI assistant. The latest minor API version is 2024-08-25. You can find the list of API versions in the IBM watsonx Assistant release notes.
+	4. In the Assistant ID, enter the assistant ID. From your IBM watsonx Assistant instance, go to the Assistant settings page. In the Assistant IDs and API details section, click View details, and copy the value from the Assistant ID field.
+	5. In the Service instance URL, enter the service instance URL. From your IBM watsonx Assistant instance, go to the Assistant settings page. In the Assistant IDs and API details section, click View details, and copy the value from the Service instance URL field.
+	6. In the Display name, enter the display name of the agent.
+	7. In the Description of assistant capabilities, enter a description of what it can do to help your users. The description must contain the most used keywords that enable the system to determine the best AI assistant that helps the users. For guidance on writing descriptions, see the Recommendations for agent descriptions section.
+	8. Click Import agent.
+Note: Assistants added as collaborator agents on watsonx Orchestrate currently support only text-based interactions, both for input and output. Interactive elements such as chat UI widgets are not supported at this time.
+Adding external A2A agents using ADK
+External agents that communicate using the Agent-to-Agent (A2A) protocol can be added as collaborators through the ADK. These A2A agents operate alongside native agents.
+IBM watsonx Orchestrate supports bearer token and API Key authentication types, processes only plain text input (excluding rich UI elements), and does not provide native task management integration for A2A agents.
+Note: A2A agents can be added as collaborators only through ADK configuration.
+Removing a collaborator agent
+	1. In the Toolset section, go to the agent that you want to remove.
+	2. Click the vertical ellipsis button 
+	 > Remove.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=agents-adding-orchestration> 
+
+Managing tools from an agent
+Last Updated: 2025-08-14
+Tools can be used to enhance your agent's capabilities and allow them to perform more complex operations.
+To manage your agent's tools, you can:
+• Add a tool
+• Edit a tool
+• Remove a tool
+Add a tool
+Tools can be added to your agent from the catalog, from your local instance, by importing an OpenAPI specification, or creating a flow using the flow builder.
+To add a tool to your agent, from the agent's toolset in the Toolset section, click Add tool.
+The following options are available
+	• Add tool from a catalog
+	• Add tool from a local instance
+	• Import an external tool
+		○ Import from file
+		○ Import from MCP server
+	• Create a tool using the flow builder
+	• Create a tool using the ADK
+	• What to do next
+To import Python tools, use the Agent Development Kit (ADK). To learn more, see Creating agents with the ADK.
+Add tool from catalog
+This option enables you to add tools from the catalog.
+	1. From the Add a new tool menu, select the Add from catalog option.
+	2. Find and select the tool that you want to add and click Add to agent.
+Add tool from a local instance
+This option enables you to add tools from a local instance. Tools in the local isntance can include any previously imported tools, any tools that were previously added from the catalog, or any tools that were created and uploaded using the CLI.
+	1. From the Add a new tool menu, select the Add from local instance option.
+	2. Select the tool that you want to add and click Add to agent.
+Import tools from an OpenAPI
+To import tools from an OpenAPI specification, you can upload your OpenAPI specification and select the operations that you want to import as tools. Each operation is created as a separate tool.
+	1. From the Add a new tool menu, select the Import option.
+	2. Click Import from file.
+	3. Drag and drop your OpenAPI file to upload. After the file is uploaded, click Next.
+	4. Select the operations that you want to create as tools, then click Next.
+	5. Do one of the following to associate connections with the OpenAPI specification:
+		○ Choose an available connection.
+		○ Click Add new connection to create a new one. You must provide the connection details to configure the connection in the Add new connection window.
+	6. Click Done.
+Import tools from an MCP server
+You can connect to Model Context Protocol (MCP) servers for importing external tools and add them to your agents, enhancing your agent’s ability to accomplish tasks.
+	1. From the Add a new tool menu, select the Import option.
+	2. Click Import from MCP server. See Importing tools from an MCP server.
+Create a tool using the flow builder
+Create a tool using the flow builder. A tool created using the flow builder is called a flow. A flow is a type of tool that defines a set of linked activities and controls that are designed to achieve a specific business purpose or goal.
+	1. From the Add a new tool menu, select the Create a new tool option. This opens the tool builder.
+	2. Add activities and flow controls. See Creating flows.
+Create a tool using the ADK
+Alternatively, you can use the ADK to upload OpenAPI or Python tools. The ADK provides a set of libraries that you can use to develop agents and tools. To learn more, see using the ADK.
+What to do next
+Once a tool is added to the toolset, an agent can start using it. After adding your tools to your agent's toolset, consider the following
+	• Update the tool's description. The agent uses the tool description field to determine whether it will use the tool and how it will use the tool. Make sure to provide a detailed description for how the agent can use the tool. To update the tool description, click the tool menu and select Edit details. When you are satisfied with your description, click Save. You can continue to iterate on the description, as you test the tool.
+	• Test the tool. To test your tool, use the prompt in the Preview chat window to invoke your tool.
+	• Make sure the value that is returned from a Python tool matches the data type that you defined for that tool.
+Edit a tool
+You can edit a tool by changing it's name, description, inputs and outputs.
+	1. From the agent's toolset in the Toolset section, find your tool in the list of tools.
+	2. Select the tool's overflow menu and click Edit details.
+	3. Edit the Name or Description field.
+	4. Edit the inputs or outputs, and click Save changes.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=agents-managing-tools-from-agent> 
+
+Configuring the agent's behavior
+Last Updated: 2025-08-14
+Configuring an agent’s behavior is essential to ensure it interacts intelligently with users, responds appropriately to different scenarios, and performs tasks effectively.
+On IBM watsonx Orchestrate, you can configure your agent’s behavior by:
+• Defining instructions that guide its actions
+• Enabling document-based interactions in chat
+Adding instructions for actions
+You add instructions to define specific actions the agent must take based on user inputs or events. Instructions help the agent respond appropriately to various scenarios. You can set rules to guide its actions and ensure a consistent user experience. For more information and detailed steps, see Adding instructions to agents.
+Enabling the user to interact with documents in the Orchestrate Chat
+Users can upload documents directly to the chat interface, allowing agents to respond based on the content of these files, by enhancing the agent's ability to provide context-aware assistance.
+Focus sentinel
+Note
+You must be an Admin or Builder to turn on Chat with documents feature.
+Focus sentinel
+To turn on this document upload feature, complete the following steps:
+	1. In the agent builder, go to the Behavior section.
+	2. In Chat with documents, switch the button to On.
+	3. In Citations show in web chat, select a number to determine how many citations or references the agent can provide in its response.
+	4. Click Deploy to apply these changes.
+	5. After the agent deployment, you can see File Upload icon 
+	
+	 in the Orchestrate Chat.
+For more details about uploading the document, refer to Uploading the document in a conversation.
+Notes:
+	• When users upload documents, they can review the citations in the chat to verify the accuracy of the information. Citations acknowledge the sources of data, models, or algorithms that the agent uses to generate outputs or make predictions.
+	• If this feature is turned off, users cannot upload documents directly in the chat, except for tools that have this functionality.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=agents-configuring-behavior> 
+
+Adding instructions to agents
+Last Updated: 2025-07-10
+The behavior of the AI agent defines how it responds to user requests and situations. You can configure rules that dictate when and how the agent must act. These rules help the agent behave in a predictable and consistent manner, delivering a seamless user experience.
+Before you begin
+See the following information that can impact the instructions for your agent.
+	• When you add new instructions, they overwrite any existing instructions.
+	• Changes are saved automatically.
+	• If you leave the field empty, the agent uses only its built-in behavior, which might not always match your requirements.
+	• Instructions are applied through all channels and tasks. You cannot currently apply them conditionally or based on user context.
+Procedure
+Follow the steps to add instructions to your agent:
+	1. Open your agent in the agent builder.
+	2. Go to the Behavior section.
+	3. In the Instructions field, enter the rules or behaviors your agent should follow.
+	4. Changes are saved automatically.
+What happens next
+The agent immediately uses the new instructions during conversations and applies the instructions to every request, through all tasks and connected channels.
+What to do next
+Take the following actions to test and maintain the effectiveness of the agent's instructions:
+	• Test your agent in the chat panel to observe how it applies the new behavior.
+	• Connect your agent to a supported channel to evaluate responses in a real-world setting.
+	• Update the instructions regularly to reflect changes in your goals or processes.
+Using context variables in agent instructions
+Context variables enable you to pass custom user information to your agent. These variables help the agent give personalized responses and run more complex tasks. For example, you can pass user-specific data like email ID, location, or member ID into the agent’s behavior.
+Using context variables you can:
+	• Personalize agent responses based on the user’s identity or preferences.
+	• Maintain continuity across different tasks or interactions in a session.
+	• Share relevant user information with tools or collaborator agents to perform actions.
+Note: To define and enable access to context variables, use the Agent Development Kit (ADK). For more information, see Providing access to context variables.
+After you define context variables in the ADK, you can provide usage instructions in the Behavior section of the agent builder UI. These instructions guide the agent on how to use the variables during interactions.
+Use curly braces {} to reference each variable by name. The following is a sample instruction that uses context variables:
+- Always respond with watsonx Orchestrate email ID as {wxo_emailid}, wxo user name as {wxo_userid}, wxo tenant ID as {wxo_tenantid}, location as {location}, and member ID as {memberid}.
+- Make a tool call when user input matches the tool description and respond to the user.
+- Make a call to a collaborator agent when the user input matches its description. Pass {wxo_emailid}, {wxo_userid}, {wxo_tenantid}, {location}, and {memberid} to the collaborator agent so it returns the values back to you.
+Best practices
+Follow the best practices of what to do and what to avoid to write instructions that help your agent perform reliably.
+What to do
+Be specific
+ "Escalate unresolved issues to a human agent."
+ "Use a polite tone in all responses."
+ "Ask for clarification if the request is vague."
+Focus on behavior
+ "Don't make assumptions if the user’s intent is unclear."
+ “Summarize long responses when possible.”
+Define boundaries
+ “Do not give legal, financial, or medical advice.”
+What to avoid
+Don’t be vague
+ "Always try your best"
+ "Be helpful"
+ "Be friendly" (unless part of a task, like a greeting)
+Don’t use unsupported logic
+ "Only respond this way if the user sounds confused"
+ "Adjust tone based on user emotion"
+Don’t include conflicting rules
+ "Keep responses short" + "Always provide detailed answers"
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=behavior-adding-instructions-agents> 
+
+
+Creating flows
+Last Updated: 2025-08-14
+A flow defines a set of linked activities and controls that are designed to achieve a specific business purpose or goal.
+About this task
+When you create a flow, you start with a start node and an end node.
+The order in which you create your flow is up to you. If you know the types of activities that you want to include in your sequence, you can start by adding those activities.
+Flows that are run asynchronously and can be long-running. When you run a flow tool in a chat, you provide the flow inputs, but any flow outputs might not be immediately available. Use the Get flow status utility tool that is provided to check the tool's status at any time and to retrieve the tool's outputs.
+Note: If you added a flow input and want to help ensure that the agent prompts for that input, mark the input as required. If you have nested input types, mark the input as required for the nested properties that you want the agent to prompt for. If an input or property has a default value, the agent might use the default value instead of prompting the user for a value.
+	• Create a flow
+	• Add tools
+	• Add branches
+	• Configure activities
+		○ Code blocks
+		○ User activities
+	• Edit data mapping
+	• What to do next
+Create a flow
+To create a flow:
+	1. From the menu 
+	, go to Build > Agent Builder.
+	2. Select All tools and click Create tool.
+	3. Select Create a new flow.
+Add tools
+To add tools:
+	1. Click the 
+	
+	 icon, or directly on the connector line that connects the start and end nodes.
+	2. Click the Tools tab.
+	3. Select a tool from your local instance.
+Add branches
+A branch is a single switch statement with at least one case. One case is designated as the default case. The default case is the path that is taken by a flow when none of the other cases are true. You can use branches to control which path is taken in the flow.
+To add a branch to the flow:
+	1. Create a branch, either:
+	• Click the 
+	
+	 icon. From the Create new tab, click and drag the Branch control onto the canvas. You can drop the control directly on a connector line or anywhere on the canvas.
+	• Select the connector line between two nodes and click add 
+	
+	. Click Branch. A branch is automatically inserted onto the connector line.
+	2. The branch is preconfigured with a single case statement. You can add another case by drawing a connection from the branch to another node in the flow.
+	3. Click the branch to configure it.
+	4. In the Expression field, enter a Python expression that produces a string value. For example, if your flow has a day_of_week input, your expression might be flow.input.day_of_week.
+	5. Expand each of the cases, and enter the string value that corresponds to that case. For example, enter Monday to execute a path that corresponds to the 'Monday' result from the expression you entered in step 4.
+Tip: Case labels are automatically named and numbered. Rename the case labels so it is easier to identify what value corresponds with which case.
+Delete branches
+To delete a branch from the flow:
+	1. Click on the branch that you want to delete.
+	2. Click delete 
+	
+	.
+Configure activities
+To add or edit an activity:
+	1. Click the 
+	
+	 icon, or directly on the connector line that connects the start and end nodes.
+	2. Click the Create new tab.
+	3. Click and drag the user activity onto the canvas.
+Code blocks
+Code blocks help you to add custom logic as Python code within your flow. Code block node is used where standard node does not meet your needs for data processing, complex logic, or message formatting. You can create code from scratch or paste it from another source, and define output variables based on your code to use later in the flow. Code block gives you more control and flexibility to customize your flow and handle complex scenarios.
+Note: If you want to incorporate a larger amount of Python code, use a tool instead of a code block.
+Create a code block
+
+To add or edit a code block.
+	1. Use one of the following actions to add a code block:
+		○ Click add tools 
+		
+		, then click and drag Code block onto a connector line.
+		○ Hover over a connector line and click add 
+		
+		, then select Code block.
+Editing or deleting a code block
+
+To edit or delete a code block:
+	1. Click the code block to open it.
+	2. To edit, hover over the name and click edit 
+	
+	.
+	3. Enter the new name and click the checkmark 
+	
+	.
+	4. To delete, click delete 
+	
+	.
+Adding or editing code in a code block
+
+To add or edit code in a code block:
+	1. Click the code block to open it.
+	2. Select the Open code editor.
+	3. Enter the new code or edit the existing code in the Code editor tab. For more information on creating code block, see Code block examples.
+	4. Click close.
+Adding output in a code block
+
+To add or delete output in a code block:
+	1. Click the code block to open it.
+	2. Select the Define outputs.
+	3. From the Outputs tab, select Add output.
+	4. Choose the output type from the drop-down list.
+	5. Enter the Name and Description (optional).
+	6. Click Save.
+Editing ot deleting output in a code block
+
+To edit or delete output in a code block:
+	1. Click the code block to open it.
+	2. Select the Define outputs.
+	3. From the Outputs tab, click options 
+	
+	 against the output.
+	4. To edit, select Edit Details from the drop-down list.
+	5. Update the Name and Description.
+	6. Click Save.
+	7. To delete, select Delete from options drop-down list.
+User activities
+A user activity consists of one or more chat-based interactions to collect input and display results within a flow. It supports mid-flow interaction, allowing users to view and respond to information directly in the chat interface. Examples include approving a request, choosing from a list, answering follow-up questions, or reporting an issue.
+Adding a user activity
+To add a user activity:
+	1. Use one of the following actions to add a user activity:
+		○ Click add tools 
+		
+		, then click and drag User activity onto a connector line.
+		○ Hover over a connector line and click add 
+		
+		, then select User activity.
+Editing a user activity
+To edit a user activity:
+	1. Click the user activity.
+	2. Hover over the name and click edit 
+	
+	.
+	3. Enter the new name and click the checkmark 
+	
+	.
+Deleting a user activity
+To delete a user activity:
+	1. Click the user activity.
+	2. Select delete 
+	
+	.
+Adding interactions
+You can use interactionsto customize the chat experience.
+To add an interaction to your user activity:
+	1. Hover over the connector line in the user activity and click add 
+	
+	.
+	2. Navigate to the Interactions tab. Toggle between Collect from users or Display to user.
+		○ To add an interaction that gets information from a user, select one of the interaction types from Collect from users.
+		Type	Description
+		Boolean choice	Collect yes or no response
+		Single choice	Collect a single choice from the list
+		Date	Collect a date input
+		File upload	Collect a file
+		Number	Collect a numeric input
+		Text	Collect a text input
+		○ To add an interaction that displays information to a user, select one of the interaction types from Display to users.
+		Type	Description
+		File download	Display as downloadable file
+		Text	Display as text
+		List	Display as list
+Editing interactions
+To edit an interaction in your user activity:
+	1. Click the interaction.
+	2. Hover over the name and click edit 
+	
+	.
+	3. Enter the new name and click the checkmark 
+	
+	.
+	4. For Display to user, you can configure variables to interactions:
+		○ Configure a Text interaction node, to display text in the chat.
+			1. Click variable 
+			
+			,select the variable from the list. Enter the message in the Output message field, that provides the text to display in the chat.
+		○ Configure a List interaction node, to display list in the chat.
+			1. Click the Select source field.
+			2. Click the variable 
+			
+			 and choose the variable that provides the list of values to display in the chat. To create a custom list, you can click the expression
+			
+			 and enter a Python expression that produces a list.
+		○ Configure a File download interaction node, to display a downloadable file in the chat.
+			1. Click the Select source field.
+			2. Click the variable 
+			
+			.
+			3. Selecct a varibale that provides the provides the file to be downloaded.
+Deleting interactions
+To delete an interaction in your user activity:
+	1. Click the interaction.
+	2. Select delete 
+	
+	.
+Note: The agent uses the title of this node to generate the prompt that is displayed to a user in the chat. To improve a user’s chat experience, provide a robust or accurate title. For example, if your title is “Age”, the agent can potentially generate “Enter your age”.
+Mapping data
+Nodes within a flow might require data as input. This data can come from the inputs into the flow, or it might come from the outputs of upstream nodes. When a flow completes, it might also produce data as output. The data that is produced by the flow might come from the flow inputs or from nodes within the flow.
+By default, when a node requires data as input, the flow engine attempts to identify potential data sources. If the flow engine locates a source, it automatically maps that data into the node. However, you can override this default behavior and provide a mapping on nodes or the flow output. To override the mapping behavior for the flow output, select the End node of the flow.
+To edit data mapping in a flow, select the node and then click Edit data mapping.
+The following data-mapping options are available:
+	• Automapping: A flow automatically maps data between steps by connecting node inputs to other nodes' outputs or to the flow’s own inputs. If a required piece of data isn’t produced by any node within the flow, you can define a flow-level input with the same name and type. The flow engine then maps it automatically, which can ensure seamless data transfer throughout the flow.
+
+Figure 1. Automapping
+	• Blank parameters: To leave a parameter blank, close the Auto-map option for the node parameter. If input parameters for a node in a flow are left empty or blank, then no value is passed to the input parameter throughout the flow.
+
+Figure 2. Blank parameter
+	• Python expressions: You can add Python expressions for node parameters in a flow.
+
+Figure 3. Adding expressions
+	• Variables: You can add variables for node parameters in a flow.
+
+Figure 4. Adding variables
+	• Literal values: You can add a specific literal value for flow runtime, such as a number or a date, to node parameters in a flow. To add a literal value, close the Auto-map option for the node parameter. The option to set a default value is not available for parameters that are mapped to literal values.
+
+Figure 5. Adding literal values
+	• Default values: You can add a specific default value to node parameters in a flow. The option to set a default value is not available for parameters that are mapped to literal values.
+
+Figure 6. Adding default values
+What to do next
+When you are done creating your flow, complete the following steps to save your changes.
+	1. Click Done.
+	2. Name your flow and provide a description.
+	3. Add any inputs or outputs.
+	4. Click Save changes.
+Your flow is now created.
+Troubleshooting
+	• If the agent is not prompting for a tool input or property, make sure that the tool input and property is set to required and that no default value is set.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=tools-creating-flows> 
+
+
+Code blocks
+Last Updated: 2025-08-14
+Code blocks allow you to add custom Python code directly within your flow. The code block node receives data from upstream node, processes it by using the logic that you define, and passes the transformed output to the downstream node. You can use a code block to process data transformations, implement custom logic or format messages before they continue to the next step in the flow.
+When the flow reaches a code block node, it runs the Python code that you defined and transforms the data. The node acts as a programmable decision or transformation point in your flow, giving you greater flexibility and control. If you want to use a larger Python code block, consider using a tool.
+Python libraries
+Within a code block, you can read variables from different parts of the flow, apply custom logic, and define output variables for use by subsequent nodes. The Python environment includes commonly used standard libraries, including the following modules:
+	• import array
+	• import calendar
+	• import collections
+	• import datetime
+	• import enum
+	• import json
+	• import math
+	• import random
+	• import re
+	• import string
+	• import time
+	• import yaml
+	• import zoneinfo
+Note:
+	• The list of available Python modules is fixed and cannot be changed or extended.
+	• Some libraries in the Python modules may not be available.
+	• Variables can be referenced by using either ["varname"] or .varname. Using ["varname"] allows for the use of spaces and commas.
+	• The type() and eval() functions are not supported.
+		○ Use safe_type() instead of type().
+		○ Use (my_str == "True") instead of eval(my_str), where my_str is either "True" or "False".
+Python dictionary objects
+Flow builder uses Python programming practices, therefore flow, self, and parent are treated as Python dictionaries. If you get an exception while reading from or assigning to a self-object, for example: self["input"]["customer"]["discount_rate"], it is likely because one of the containing objects (like "customer") does not exist yet. In that case, you need to first initialize the containing objects.
+When a code block runs, it uses Python dictionary objects to represent the inputs and outputs. You can use expression syntax to reference or set these values as needed. For more information about the syntax, see the Flow expressions section of the IBM wastonsx Orchestrate ADK.
+Here is an example flow dictionary:
+# flow represents the inputs and outputs of the outermost flow
+flow = {
+  "input": {
+    "birthday": "1-10-2000",
+    "first_name": "John",
+    "last_name": "Doe",
+    "address": {
+      "street": "123 ABC Street",
+      "city": "NY",
+      "state": "NY",
+      "country": "USA"
+    },
+    "customer_status": "Bronze"
+  },
+  "output": {
+    "current_date": "<current date>",
+    "current_datetime": "<current datetime>",
+    "age": <number>,
+    "address": <str>
+  }
+}
+# self represents the inputs and outputs of the current node
+self = {
+  "input": {
+    "customer_status": "Bronze",
+    "price": 1000
+  },
+  "output": {
+    "discount_rate": <number>
+  }
+}
+
+
+Data types
+The following table lists the data types that are supported in flows, along with their equivalent Python and JSON types used in expressions and code blocks.
+Flow data type	Python data type	JSON data type
+String	str	string
+Integer	int	integer
+Number	float	number
+Boolean	bool	boolean
+Date	str	string
+Object	dict	object
+Note:
+	• To define an object data type in flows, you must adhere to the JSON schema standard. For more information, see the JSON Schema documentation.
+	• In Python, dates are strings that use the ISO 8601 date format. JSON dates are strings with a “date” format, which uses the ISO 8601 date format, for example:
+"startDate": {
+ "type": "string",
+ "description": "Employee's start date",
+ "format": "date"
+}
+
+
+Data type conversion
+Data type conversions allow transforming a value from one format to another. The following code blocks provide Python expression examples of different types of data conversion.
+Examples
+String conversion
+A code block that converts a string into an integer.
+
+
+
+A code block that converts a string into a number.
+
+
+
+A code block that converts a string into a boolean.
+
+
+A code block that converts a string into a date.
+
+
+
+A code block that converts a string into a date by using datetime package.
+
+
+
+Integer conversion
+A code block that converts an integer into a string.
+
+
+A code block that converts an integer into a number.
+
+
+A code block that converts an integer into a boolean.
+
+
+
+A code block that converts an integer into a date.
+
+
+Number conversion
+A code block that converts a number into a string.
+
+
+A code block that converts a number into an integer.
+
+
+
+A code block that converts a number into a boolean.
+
+
+
+A code block that converts a number into a date.
+
+
+Boolean conversion
+A code block that converts a boolean into a string.
+
+
+A code block that converts a boolean into an integer.
+
+
+A code block that converts a boolean into a number.
+
+
+Date conversions
+A code block that converts a date into a string.
+
+
+
+A code block that converts a date into an integer.
+
+
+A code block that converts a date into a number.
+
+
+Use cases and examples
+You can use the code block node to customize how your flow handles data. It is useful when standard nodes do not meet your specific needs. The following are some common use cases.
+Message formatting
+You can format or restructure messages as needed, while also moving information to the next node. The following code block example shows a practical application of message formatting.
+Examples
+A code block that formats address input and displays it as a single string separated by commas.
+
+
+Flexible integration
+You can place the code block node anywhere in the flow to integrate with other nodes and tools. The following code block sample shows a practical application of flexible integration.
+Examples
+A code block that defines a variable that is called todays_date as a Date data type and initializes todays_date and sets the value to the current date.
+
+
+
+A code block that initializes a set of output variables using primitive data types: string, integer, number, and boolean.
+
+
+
+Custom data transformation
+You can write Python code to transform, filter, initialize variables, or enhance existing data as it passes through the flow. The following code block examples show a practical application of custom data transformation.
+Examples
+A code block that parses a JSON string containing address fields into a Python dictionary.
+
+
+
+A code block that assigns the state value from the address dictionary to the input address in the flow.
+
+
+
+A code block sets an output variable called employee as an object data type.
+
+
+
+
+A code block that initializes the employee output variable.
+
+
+
+
+Business logic implementation
+You can apply conditional logic, compute calculations and decisions, or run custom operations as needed in the flow. The following code block examples show a practical application of business logic implementation.
+Examples
+A code block that calculates and displays the user's age based on the date of birth input.
+
+
+
+
+
+
+
+A code block that checks the product type and age to determine whether to accept payment.
+
+
+
+A code block that displays a discount rate based on input variables price and customer_status.
+
+
+
+A code block that formats the address input into a string by using if-then logic.
+
+
+
+A code block that calculates the date three days earlier from the current date, and stores it in the variable thee_days_ago.
+
+
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=flows-code-block-examples> 
+
+Importing tools from an MCP server
+Last Updated: 2025-07-24
+You can import external tools from Model Context Protocol (MCP) servers and add them to your agents to enhance the agent’s ability to accomplish tasks.
+About MCP servers
+MCP is a standard that allows agents to securely and flexibly interact with external tools and data sources through MCP servers. MCP enables agents to discover, connect to, and start external tools that are provided by MCP servers. These servers function as intermediaries, presenting various capabilities (such as searching web, querying a database, sending email, or fetching web content) in a standardized manner. This process does not require creating custom APIs or manually setting up connections, making it a simpler and more efficient method for agents to use external tools.
+With MCP, agents can discover and use these external tools during run time, enhancing their capabilities beyond their inherent features. All interactions with external tools are managed through a single protocol, which simplifies connections and improves efficiency. Moreover, MCP facilitates collaboration and tool sharing among agents from different vendors or platforms.
+Follow these steps before you import an MCP server:
+	1. Identify an MCP server to use. Usually, MCP servers are found on GitHub repositories, such as https://github.com/appcypher/awesome-mcp-servers and https://github.com/modelcontextprotocol/servers.
+	2. Locate the installation instructions in the MCP server documentation or readme file.
+		○ Typically, you can find instructions about how to start the MCP server by using Node or Python. For example, npx -y time-mcp
+		○ Certain MCP servers require API keys or other environment variables to be set for communicating with remote services. For example, a "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>" API key.
+	3. Ensure that the MCP server is legitimate and safe for your agents to use.
+watsonx Orchestrate allows the installation and execution of Node and Python MCP servers, typically servers that use the npx and uvx commands.
+Installing an MCP server that requires environment variables
+To install MCP servers that require environment variables, you must add the required variables into an AppID/Connection by using key-value pairs. For example, to use the "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>" API key, you must add a key-value pair with GITHUB_PERSONAL_ACCESS_TOKEN as the key and your personal token as the value.
+MCP servers fetch the environment variables when they start, so it is important to set the variables before you import or start an MCP server.
+Importing tools
+To import external tools from an MCP server, complete the following steps:
+	1. From the Add a new tool dialog, select the Import option.
+	2. Click Import from MCP server.
+	3. If MCP servers are not added yet, complete the following steps:
+		○ Click Add MCP server.
+		○ Specify the MCP server details such as name, description, app ID, and installation command.
+		○ Click Connect.
+		○ Click Done after the connection is successful. All the tools from the MCP server are displayed.
+	4. If MCP servers are already added, you can select the external tools to add to your agent.
+Adding external tools to your agent
+You can add external tools that are imported from MCP servers to your agent.
+To add external tools, select the MCP server from the list, and then set the toggle switch for the tool to On.
+By default, all the tools from the imported MCP servers are listed on the page. You can also search for tools by using the search option on the page.
+Managing MCP servers
+On the Manage MCP servers page, you can edit the MCP server details and also delete MCP servers that are no longer needed.
+To manage MCP servers, complete the following steps:
+	1. Click Manage MCP servers.
+	2. To edit the details for an MCP server, click the Options icon 
+	
+	, and then click Edit details.
+	3. To delete an MCP server, click the Options icon 
+	
+	, and then click Delete.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=tools-importing-from-mcp-server> 
+
+
+copyright: years: [{CURRENT_YEAR}] lastupdated: "[{LAST_UPDATED_DATE}]"
+subcollection: watson-assistant
+
+SaaS
+Configuring Base LLM
+Last Updated: 2025-06-04
+The Base large language model (LLM) section in the Generative AI page helps you to configure large language models for your assistants. The LLMs in AI assistant builder enable your customers to interact with the assistants seamlessly without any custom-built conversational steps. You can enable the Base LLM features for the existing actions in your assistants that improve their conversation capability.
+
+Base LLM
+You can do the following actions in the Base LLM configuration:
+	• Configuring Base LLM
+		○ Selecting a large language model for your assistant
+		○ Adding prompt instructions
+		○ Selecting the answering behavior of your assistant
+		○ Languages supported for conversational search
+Selecting a large language model for your assistant
+To select the LLM that suits your enterprise ecosystem, do the following steps:
+	1. Go to Home > Generative AI.
+	2. In the Base large language model (LLM) section, select the large language model from the Select a model dropdown. For more information about models, see Supported foundation models for different components.
+Adding prompt instructions
+You can instruct the LLM in your assistant to give refined responses by adding prompt instructions. The prompt instructions help LLMs to guide the conversations with clarity and specificity to achieve the end goal of an action. Follow these steps to add the prompt instruction:
+	1. Go to Home > Generative AI.
+	2. In the Add prompt instructions section, click Add instructions to see the Prompt instruction field.
+	3. Enter the prompt instructions in the Prompt instruction field.
+Focus sentinel
+Note
+The maximum number of characters that you can enter in the Prompt instruction field is 1,000.
+Focus sentinel
+Selecting the answering behavior of your assistant
+You can configure the answering behavior of your assistant to provide responses that are based on the preloaded content or general content. The answering behaviors that you can configure are:
+	• General-purpose answering
+In general-purpose answerings, the LLM gives responses to customer queries based on general topics.
+Important:If you are in the agentic experience of IBM watsonx Orchestrate, general-purpose answering might not be available.
+	• Conversational search
+To use the conversational search, you must configure search integration and enable conversational search.
+Focus sentinel
+Note
+Toggling off: Conversational search disables the process that calls it in the routing priority path. You are not disabling the search capability itself.
+Focus sentinel
+The following Conversational search behavior applies:
+	• If you enable both General-purpose answering and Conversational search, the Conversational search takes precedence over General-purpose answering.
+	• If the assistant response scores less in search confidence, the answer behavior uses General-purpose answering.
+	• The LLM uses content that is preloaded during the search integration to respond to customer queries.
+Languages supported for conversational search
+You can use conversational search with the languages other than English, including French, Spanish, German, and Brazilian Portuguese. These languages are best supported by the following models:
+	• ibm/granite-3-8b-instruct
+	• meta-llama/llama-3-1-70b-instruct
+	• meta-llama/llama-3-3-70b-instruct
+	• mistral-large
+You can test to verify that you get reasonable results in your language.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=developing-configuring-base-llm> 
+
+Defining responses by using the JSON editor
+Last Updated: 2024-11-19
+In some situations, you might need to define your assistant's responses by using the JSON editor. For more information, see Adding assistant responses.
+To edit a response by using the JSON editor, click the Switch to JSON editor icon 
+
+ in the Assistant says field. The JSON editor shows how the response is defined behind the scenes and sent to the channel.
+Generic JSON format
+If you open the JSON editor on a new, empty response, you see the following basic structure:
+{
+  "generic": []
+}
+
+
+The generic property defines an array of responses that are sent to the channel when the step is executed. The term generic refers to the fact that these responses are defined by using a generic JSON format that is not specific to any channel. This format can accommodate various response types that are supported by multiple integrations, and can also be implemented by a custom client application that uses the REST API.
+The generic array for a step can contain multiple responses, and each response has a response type. A basic step that sends a simple text response typically includes only a single response with the response type text. However, many other response types are available, supporting multimedia and interactive content, plus control over the behavior of some channel integrations.
+Although the generic format can be sent to any channel integration, not all channels support all response types, so a particular response might be ignored or handled differently by some channels. For more information, see Channel integration support for response types.
+Focus sentinel
+Note
+At run time, output with multiple responses might be split into multiple message payloads. The channel integration sends these messages to the channel in sequence, but it is the responsibility of the channel to deliver these messages to the user; this can be affected by network or server issues.
+Focus sentinel
+Adding responses
+To specify a response in the JSON editor, insert the appropriate JSON objects into the generic field of the step response. The following example shows output with two responses of different types (text and an image):
+{
+  "generic":[
+    {
+      "response_type": "text",
+      "values": [
+        {
+          "text_expression": {
+            "concat": [
+              {
+                "scalar": "This is a text response."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "response_type": "image",
+      "source": "https://example.com/image.jpg",
+      "title": "Example image",
+      "description": "This is an image response."
+    }
+  ]
+}
+
+
+For more information, see Response types.
+Targeting specific integrations
+If you plan to deploy your assistant to multiple channels, you might want to send different responses to different integrations based on the capabilities of each channel. The channels property of the generic response object provides a way to do this.
+This mechanism is useful if your conversation flow does not change based on the integration in use, and if you cannot know in advance what integration the response is sent to at run time. By using channels, you can define a single step that supports all integrations, while still customizing the output for each channel. For example, you might want to customize the text formatting, or even send different response types, based on what the channel supports.
+Using channels is useful along with the channel_transfer response type. Because the message output is processed both by the channel that initiates the transfer and by the target channel, you can use channels to define responses that are processed by one or the other.
+To specify the integrations for which a response is intended, include the optional channels array as part of the response object. All response types support the channels array. This array contains one or more objects by using the following syntax:
+{
+  "channel": "<channel_name>"
+}
+
+
+The value of <channel_name> can be any of the following strings:
+	• chat: Web chat
+	• voice_telephony: Phone
+	• text_messaging: SMS
+	• slack: Slack
+	• facebook: Facebook Messenger
+	• whatsapp: WhatsApp
+The following example shows step output that contains two responses: one intended for the web chat integration and one intended for the Slack and Facebook integrations.
+{
+  "generic": [
+    {
+      "response_type": "text",
+      "channels": [
+        {
+          "channel": "chat"
+        }
+      ],
+      "values": [
+        {
+          "text_expression": {
+            "concat": [
+              {
+                "scalar": "This output is intended for the <strong>web chat</strong>."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "response_type": "text",
+      "channels": [
+        {
+          "channel": "slack"
+        },
+        {
+          "channel": "facebook"
+        }
+      ],
+      "values": [
+        {
+          "text_expression": {
+            "concat": [
+              {
+                "scalar": "This output is intended for either Slack or Facebook."
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
+
+
+If the channels array is present, it must contain at least one channel object. Any integration that is not listed ignores the response. If the channels array is absent, all integrations handle the response.
+Response types
+You can configure different types of responses using JSON. To learn more about response types and supported integrations for JSON response types, see Response types reference.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=developing-defining-responses-by-using-json-editor> 
+
+
+Dynamic options
+Last Updated: 2024-11-19
+An options response presents customers with a list of choices to select from. You can use the dynamic setting to generate the list from options that might be different each time.
+Dynamic options are generated based on the data stored in a variable, which must be available to the step asking the question. The source variable must contain an array of values, each of which represents one of the options that will be presented to the customer. The items in the array can be simple values such as strings or numbers (for example, [ "Raleigh", "Boston", "New York" ]) or compound JSON objects.
+A common scenario for dynamic options is when an array is returned from an external API that you call using a custom extension. For example, you might use a custom extension to retrieve a list of credit cards associated with a customer's account. You can then use dynamic options to ask the customer which card to use during the conversation. (For more information about custom extensions, see Calling a custom extension.)
+Your actions might also populate the source variable using expressions. For example, you might use a session variable to build a shopping cart containing items the customer has decided to purchase. An action for removing an item from the cart could then use dynamic options to show the items in the cart so the customer can select which one to remove. (For more information about using expressions for variable values, see Using an expression to assign a value to a session variable.)
+Defining dynamic options
+To define a dynamic options customer response:
+	1. In a step, click Define customer response.
+	2. Choose the Options response type.
+	3. Click the Dynamic toggle.
+	4. In the Source variable field, choose the variable that contains the array that defines the dynamic options (for example, the variable containing the response from a custom extension that you called in a previous step).
+	5. Optional: In the Option field, write an expression that maps the items in the source array to the options that will be listed. This expression serves as a template that converts each item in the array to a meaningful value that will be displayed to the customer. In this expression, use the dynamic variable ${item} to represent the item.
+In some situations, you do not need to specify an expression:
+		○ If the items in the array are simple values such as strings or integers, the value of each item is automatically shown as an option. However, you might still want to define a mapping if you want to manipulate or reformat the items to make them more meaningful. For example, you might use the expression "Part #" + ${item} to show part numbers using the format Part #12345.
+		○ If the items in the array are JSON objects, the default mapping looks for a property called label and uses its value (if present) as the option. If the item does not include a label property, or you do not want to use the value of the label property as the option, you must write an expression to specify a mapping. You can use dot notation to refer to a property in the object using its JSON path (for example, ${item}.name).
+	6. Optional: Click Add fallback option to include a static choice, such as None of the above, if the options aren't what the customer wants. You can then add a step that is conditioned on this static option to provide further assistance. To add the condition, write a expression such as ${step_id}.value == "None of the above".
+Mapping examples
+Suppose you want to build an action that shows a list of pets available for adoption and prompts the customer to select a pet to see more information about. The source variable contains an array from a custom extension in the following format:
+[
+  {
+    "id": "123",
+    "name": "Casey",
+    "breed": "Shetland sheepdog",
+    "age": 3
+  },
+  {
+    "id": "987",
+    "name": "Phoebe",
+    "breed": "chihuahua",
+    "age": 7
+  }
+]
+The schema for the items does not include a label property, so the default mapping is not available. Instead, you might use an expression to build a complex label that includes data taken from several different properties. For example, you might use the expression ${item}.name + " (" + ${item}.breed + ", age " + ${item}.age + ")" to define the option labels:
+
+Remember that you can use expression methods to manipulate values from the source variable in various ways. For example, you might have an action customers use to select a credit card for payment, but for security reasons you don't want to show the entire card number. You could write an expression that uses the substring() method to include only the last four digits of each card number (for example, "Card ending in " + ${item}.card_number.substring(16, 20)).
+Referencing the selected item
+After the customer has selected one of the dynamically generated options, you will probably need to reference the selected item in a subsequent step.
+If you reference the action variable representing the customer response, the default is to use the value of the selected option. However, in some situations, you might not want to use the same value that was used to display the option to the customer. Instead, you might need to use a unique identifier or other property that unambiguously identifies the selected option.
+For example, if the customer selects a pet to show more information about, you probably need to use a unique identifier (the id property in our example) to query the database, since the pet's name, age, and breed might not be unique. Or if the customer is selecting a credit card from options that show only the last four digits, you will need to use the full credit card number to access the account details or complete a transaction.
+In this situation, you can write an expression to access the original properties of the selected item:
+	1. Create or edit a step that comes after the step in which the customer selects from the dynamic options.
+	2. In the Variable values section, write an expression to assign a value to a session variable. (For more information, see Using an expression to assign a value to a session variable.)
+	3. In the expression editor, type a dollar sign ($) and then select the step in which the customer selected the dynamic option.
+	4. Use the property name item to represent the selected item, and dot notation to access its properties. For example, the following expression accesses the id property of the item selected in a previous step:
+${step_331}.item.id
+
+You can use a complex expression to construct a value using multiple properties of the selected item. For example, you might use an expression such as ${step_123}.item.firstname + " " + ${step_123}.item.lastname to construct a person's full name. Use the expression to define the value in whatever format you need to complete any required action.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=developing-dynamic-options> 
+
+
+
+
+
+Guiding customers with journeys
+Last Updated: 2024-11-19
+Beta
+A journey is an interactive response that you can use to guide your customers through a complex task, or to give them a tour of new features, taking advantage of capabilities your website already supports. A journey is a multipart response that can combine text, video, and images presented in sequence.
+Focus sentinel
+Beta
+This beta feature is available for evaluation and testing purposes only. Journeys require web chat version 6.9.0 or later.
+Focus sentinel
+When the customer starts a journey, the chat window temporarily closes. The web chat integration then presents the journey elements one step at a time in a small window superimposed over your website, enabling your customers to navigate and use the website as they step through the journey. At any time during the journey, the customer can freely return to the assistant chat window and then resume the journey.
+
+You might use a journey in situations like the following examples:
+• Onboarding new customers to your product or website and showing them where everything is
+• Providing customers with step-by-step guidance for a complex task, like filing a claim or creating an account
+• Promoting sales opportunities in your product to target users during specific marketing opportunities, such as offering a new rewards program to customers who are concerned about expenses
+Focus sentinel
+Tip
+For more information about deciding when and how to use journeys, see our best practices guide.
+Focus sentinel
+Creating a journey
+A journey is defined using the user_defined response type, which is available only in the JSON editor. (For more information, see Defining responses using the JSON editor.) To create a journey, follow these steps:
+	1. In the action editor, create or edit the step from which you want to start the journey.
+	2. Click the Switch to JSON editor icon 
+	
+	 to open the JSON editor.
+	3. In the generic array, create a user_defined response. (For more information, see Defining responses using the JSON editor.)
+A journey is defined using the following structure:
+"user_defined": {
+  "user_defined_type": "IBM_BETA_JOURNEYS_TOUR",
+  "skip_card": true|false,
+  "card_title": "{title}",
+  "card_description": "{description}",
+  "steps": [
+    ...
+  ]
+}
+
+where:
+user_defined_type
+The specific type of user-defined response you are defining. To define a journey, always set this property to IBM_BETA_JOURNEYS_TOUR.
+skip_card
+An optional property that specifies whether the web chat should start the journey immediately without waiting for the customer to click the introductory card in the web chat window. (The default value is false.)
+Focus sentinel
+Tip
+You can use this option to start a journey directly from your website, even if the web chat is not open. For more information, see Starting a journey without opening the web chat.
+Focus sentinel
+card_title
+The title to display on the introductory card that appears in the web chat when a journey is available (for example, Website tour or Disputing a charge).
+card_description
+The description to display on the introductory card. Describe the journey so your customers can decide whether they want to open it.
+steps
+An array of responses defining the steps in the journey.
+Defining steps
+Each step in a journey is defined as a JSON object describing a response to be shown to the customer, using a format that is similar to how you define assistant responses directly in the generic array. Steps in a journey are shown to the customer one at a time, in the order in which you list them in the steps array.
+As with assistant responses, the response_type property identifies the type of response:
+	text
+		A step that shows only text.
+		{
+  "response_type": "text",
+  "text": "This is the text of the response."
+}
+		Markdown formatting and links are supported in text steps. For more information, see Markdown formatting.
+		Focus sentinel
+		Important
+		Note that the structure of a text step in a journey is different from the text response type for assistant responses. Instead of an array of text values, only a single text component is supported.
+		Focus sentinel
+	image
+		A step that shows an image, along with an optional description.
+		{
+  "response_type": "image",
+  "source": "https://example.com/image.png",
+  "description": "This is the description of the image."
+}
+		The source property must be the https: URL of a publicly accessible image. The specified image must be in .jpg, .gif, or .png format.
+	video
+		A step that shows a video, along with an optional description.
+		{
+  "response_type": "video",
+  "source": "https://example.com/videos/example-video.mp4",
+  "description": "This is the description of the video."
+}
+		The URL specified by the source property can be either of the following:
+			§ The URL of a video file in a standard format such as MPEG or AVI. In the web chat, the linked video will render as an embedded video player.
+HLS (.m3u8) and DASH (MPD) streaming videos are not supported.
+			§ The URL of a video hosted on a supported video hosting service. In the web chat, the linked video will render using the embeddable player for the hosting service.
+Specify the URL you would use to view the video in your browser (for example, https://www.youtube.com/watch?v=52bpMKVigGU). You do not need to convert the URL to an embeddable form; the web chat will do this automatically.
+You can embed videos hosted on the following services:
+				□ YouTube
+				□ Facebook
+				□ Vimeo
+				□ Twitch
+				□ Streamable
+				□ Wistia
+				□ Vidyard
+Example
+The following example defines a journey that shows users how to dispute a charge, using a combination of text, image, and video responses.
+{
+  "generic": [
+    {
+      "response_type": "user_defined",
+      "user_defined": {
+        "card_title": "Let’s dispute a charge!",
+        "card_description": "Follow along with this guided journey to learn how to find and dispute charges.",
+        "user_defined_type": "IBM_BETA_JOURNEYS_TOUR",
+        "steps": [
+          {
+            "response_type": "text",
+            "text": "Charges are listed on the Transactions page. **Click your profile photo** in the top right corner of your screen, and then **click Transactions** from the menu."
+          },
+          {
+            "response_type": "text",
+            "text": "Here you can view your charges.\n **Scroll through the Transactions page and review your charges.** Each charge contains a merchant name, transaction date, and amount charged."
+          },
+          {
+            "response_type": "image",
+            "source": "https://example.com/image.png",
+            "alt_text": "Image showing location of Dispute option",
+            "description": "The option to Dispute is marked in red on the right hand side of each row in the Transactions table. Just click here to file a dispute."
+          },
+          {
+            "response_type": "video",
+            "source": "https://vimeo.com/769580398",
+            "description": "Watch this short video to learn what to expect now that you’ve filed a dispute."
+          }
+        ]
+      }
+    }
+  ]
+}
+Starting a journey without opening the web chat
+Although journeys are part of the web chat integration, you can make it possible for your customers to start a journey directly from your website without opening the web chat window at all. For example, you might want to include a Show me button on your website that customers can click to launch an interactive tour of the page.
+To start a journey without opening the web chat:
+	1. In the action that sends the journey response, edit the JSON that defines the journey. Include "skip_card": true to bypass the introductory card.
+	2. On your website, use the send() instance method to send a message to the assistant that triggers the action that starts the journey (such as Give me a tour). Send the message in response to whatever event you want to use to trigger the journey (such as a button click or page load).
+Your customers can now start the interactive journey directly from your website without having to open the web chat first. (If the web chat window is opened later, the introductory card for the journey appears in the chat history.)
+Limitations
+This beta feature currently has the following limitations:
+	• The preview pane does not support journeys. If you want to preview a journey, use the shareable preview link. For more information about the preview link, see Copying a link to share.
+	• Journeys use the view:change event or changeView method, and do not work with the window:open or window:close events or the openWindow, closeWindow and toggleOpen instance methods.
+	• When the customer starts a journey, the web chat window closes. If you are using the view:change event to trigger the display of a post-chat form, your code should check the value of the new event.reason or event.newViewState.tour parameter to decide if showing the form is appropriate.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=developing-guiding-customers-journeys> 
+
+Writing expressions
+Last Updated: 2025-02-27
+You can write expressions to specify values that are independent of, or derived from, values that are collected in steps or stored in session variables. You can use an expression to define a step condition or to define the value of a session variable.
+Using an expression in a step condition
+You can use an expression in a step condition if you want to condition a step on the result of a calculation based on information you have gathered during the conversation.
+For example, suppose a customer has $200 in a savings account and wants to transfer $150 from it to a new checking account. The funds transfer fee is $3, and the bank charges a fee when a savings account contains less than $50. You could create a step with a step condition that checks for this situation. The step condition would use an expression like this:
+${savings} - (${Step_232} + ${transfer_fee}) < 50
+
+
+where:
+	• ${savings} represents a session variable that stores the customer's savings account total.
+	• ${Step_232} represents the step that asks for the amount the customer wants to transfer.
+	• ${transfer_fee} represents a session variable that specifies the fee for a funds transfer.
+If the step condition is met, the step warns the user that the requested transfer will bring the savings account balance below the $50 minimum and incur a fee, and ask to confirm before proceeding.
+To use an expression in a step condition, follow these steps:
+	1. From the step, click Add condition.
+A condition is generated automatically with the most likely choice, which is typically any variables that were set in the previous step.
+	2. Click the first segment of the generated condition, and then scroll down and click Expression.
+	3. Optional: Click the 
+	
+	 Expand icon to open the expression editor window. (You can also type the expression directly in the field without opening the window, but the editor makes it easier to edit a longer or more complex expression.)
+	4. Type the expression that you want to use.
+Using an expression to assign a value to a session variable
+You can use the following example expressions to combine strings or calculate numbers when assigning values to session variables:
+String Combination: To concatenate multiple strings or text values, use the + symbol in an expression.
+${session_variable_1} + " some string of text " + ${session_variable_2}
+The resulting value is the content of session_variable_1 followed by " some string of text " and the value of session_variable_2.
+Number Calculation: To calculate values based on other variables, use expressions.
+For example, suppose you want to tell your customer the total cost of a purchase, including 6% sales tax and a flat $3.00 processing fee. To calculate the total cost, create a session variable and assign the value using an expression:
+(${price} * 1.06) + 3
+You can then reference this variable in the Assistant says field.
+To use an expression when assigning a value to a session variable, follow these steps:
+	1. From within a step, click Set variable values.
+	2. Click Set new value.
+	3. From the drop-down list, select the session variable you want to store the value in.
+	4. After to, select Expression.
+	5. Type the expression you want to use.
+	6. If you are using the expression editor, click Apply to save your changes and close the editor window.
+Focus sentinel
+Tip
+You can also use an expression to assign an initial value to a session variable. In the Session variable window, go to the Initial value field and click Use expression.
+Focus sentinel
+You can also write an expression directly without first picking a variable:
+	1. From within a step, click Set variable values.
+	2. Click Set new value.
+	3. From the drop-down list, select Expression.
+	4. Type the expression you want to use.
+	5. If you are using the expression editor, click Apply to save your changes and close the editor window.
+Expression syntax
+The AI assistant expression language is based on the Spring Expression Language (SpEL), but with some important differences in syntax. For detailed background information about SpEL, see Spring Expression Language (SpEL).
+Variables
+To reference a variable in an expression, type type a dollar sign ($) and then select a variable from the list. The reference is inserted into your expression in the correct notation, referencing the variable using its variable ID rather than its display name (for example, ${step_773} or ${customer_id}). Do not edit this reference unless you want to refer to a different variable and you are sure of its variable ID.
+To reference the user-defined action or session variables in a custom built client application, use the reserved keyword prefix user_defined_ . For example, use ${user_defined_my_context_var} to get the value of my_context_var set by your client.
+Standard math
+For numeric values, you can use expressions to perform mathematical calculations. For basic arithmetic, you can use standard operators (+, -, *, /).
+You can also use methods to perform additional mathematical operations. For more information, see Expression language methods for actions.
+Arrays
+To define an array value, type the value using square brackets, with commas separating the items (for example, [ "one", "two", "three" ]).
+To reference an item in an array, use bracket notation and specify the zero-based index of the item in the array For example, ${Items}[0] represents the first item in the array Items.
+Focus sentinel
+Tip
+You can also use the array method get() to retrieve an item from an array. For more information, see Expression language methods for actions.
+Focus sentinel
+JSON objects
+Use JSON notation to define compound objects in expressions. For example, the following expression assigns a complex JSON object as the value for a variable:
+{
+  "name": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "age": 36
+}
+You can use variables and standard math within JSON to create dynamic objects that are calculated at run time. For example, the following expression defines a JSON object that references variables and calculates an average value:
+{
+  "temp_1": ${temp_1},
+  "temp_2": ${temp_2},
+  "avg_temp": (${temp_1} + ${temp_2}) / 2
+}
+To refer to a child object contained in a JSON value, use dot notation to express the path to the object (for example, ${customer}.name.lastname).
+If you need to refer to a child of an object that might or might not be defined, use the safe navigation operator (?). For example, the expression ${customer}.name?.lastname evaluates to null if customer.name is null. (Without the safe navigation operator, an error would result.)
+Methods
+Use expression language methods to manipulate values (for example, formatting a string or appending an item to an array). For more information about the supported methods for each data type, see Expression language methods for actions.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=developing-writing-expressions> 
+
+Building a custom extension
+Last Updated: 2025-04-11
+If you need to integrate your assistant with an external service that has a REST API, you can build a custom extension by importing an OpenAPI document.
+After you create a custom extension, you can connect it to an assistant as an integration. In your actions, you can then define steps that interact with the external service by calling the extension.
+Focus sentinel
+Tip
+The AI assistant builder extension starter kit repo on GitHub provides files and Advanced Usage tips that you can use to quickly build a working extension. Each starter kit includes a tested OpenAPI definition that you can use to create an extension that accesses a third-party API, along with a downloadable JSON file you can import to create an assistant that accesses the extension.
+Focus sentinel
+Overview
+OpenAPI (formerly known as Swagger) is an open standard for describing and documenting REST APIs. An OpenAPI document defines the resources and operations that are supported by an API, including request parameters and response data, along with details such as server URLs and authentication methods.
+An OpenAPI document describes a REST API in terms of paths and operations. A path identifies a particular resource that can be accessed by using the API (for example, a hotel reservation or a customer record). An operation defines a particular action that can be performed on that resource (such as creating, retrieving, updating, or deleting it).
+The OpenAPI document specifies all of the details for each operation, including the HTTP method that is used, request parameters, the data included in the request body, and the structure of the response body.
+For more information about the OpenAPI specification, see OpenAPI Specification.
+When you create a custom extension, you import an OpenAPI document that describes the REST API of an external service. AI assistant builder parses the OpenAPI document to identify the operations supported by the external service, along with information about the input parameters and response for each operation and supported authentication methods.
+After this processing is complete, the custom extension becomes available as a new integration that you can connect to the assistant. Your assistant can then use the extension to send requests to the external service based on conversations with your customers. Values that are included in the response from the service are then mapped to action variables, which can be accessed by subsequent action steps.
+(For more information about connecting a custom extension to an assistant, see Add a custom extension.)
+Preparing the API definition
+To create a custom extension, you need access to an OpenAPI document that describes the REST API you want to integrate with. Many third-party services publish OpenAPI documents that describe their APIs, which you can download and import. For an API that your company maintains, you can use standard tools to create an OpenAPI document that describes it.
+Focus sentinel
+Tip
+The SwaggerHub website offers an OpenAPI 3.0 Tutorial, and tools to help you develop and validate your OpenAPI document. You can use the online Swagger editor to convert your OpenAPI document to the correct format and OpenAPI version.
+Focus sentinel
+The OpenAPI document must satisfy the following requirements and restrictions:
+	• The document must conform to the OpenAPI 3.0 specification. If you have an OpenAPI (or Swagger) document that uses an earlier version of the specification, you can use the online Swagger editor to convert it to OpenAPI 3.0.
+	• The document must be in JSON format (YAML is not supported). If you have a YAML document, you can use the online Swagger editor to convert it to JSON.
+	• The request body in the JSON script must be presented an object. For example:
+{
+    name: "Bob",
+    hobbies: ["sleeping", "eating", "walking"]
+}
+
+
+	• The size of the document must not be more than 8 MB.
+	• The content-type must be application/json.
+	• Each operation must have a clear and concise summary. The summary text is used in the UI to describe the operations that are available from an action, so it should be short and meaningful to someone who is building an assistant.
+	• Relative URLs are currently not supported.
+	• Only Basic, Bearer, OAuth 2.0, and API key authentication are supported.
+	• For OAuth 2.0 authentication, Authorization Code, Client Credentials, Password, and custom grant types that starts with x- are supported. Note that x- is used by the IBM IAM authentication mechanism and by watsonx.
+	• Schemas that are defined by using anyOf, oneOf, and allOf are currently not supported.
+In addition, any call to the external API must complete within 48 seconds.
+Building the custom extension
+To build a custom extension based on the API definition, follow these steps:
+	1. Go to the 
+	 Integrations page.
+	2. Scroll to the Extensions section and click Build custom extension.
+	3. Read the Get started information and click Next to continue.
+	4. In the Basic information step, specify the following information about the extension you are creating:
+		○ Extension name: A short, descriptive name for the extension (for example, CRM system or Weather service). This name that is displayed on the tile for the extension on the Integrations page, and in the list of available extensions in the action editor.
+		○ Extension description: A brief summary of the extension and what it does. The description is available from the Integrations page.
+Click Next.
+	5. In the Import OpenAPI step, click or drag to add the OpenAPI document that describes the REST API you want to integrate with.
+If you encounter an error when you try to import the JSON file, make sure the file satisfies all requirements listed in Preparing the API definition. Edit the file to correct errors or remove unsupported features. Click the X to clear the error message, and try the import again.
+After you import the file successfully, click Next.
+	6. In the Manage extension step, you can review the imported OpenAPI document if required.
+	7. In the Authentication tab, you see information about the authentication methods that are defined in the OpenAPI document. Table. Fields in Authentication tab gives details about the fields in the Authentication tab:
+	Field name	Description	Values
+	Authentication type	The type of authentication set up in the OpenAPI script.	- OAuth 2.0
+			- Basic Auth
+			- API key auth
+			- Bearer auth
+	Username	The username credential in the OpenAPI script.	For example, user
+	Password	The password credential set up in the OpenAPI script.	For example, Password@123
+	Servers	The link to the server that is defined in the Open API document to connect. to the API extension.	For example, https://custom-extension-server.xyz
+	8. The Review operations table shows the operations that the assistant is able to call from an action step. An operation is a request by using a particular HTTP method, such as GET or POST, on a particular resource.
+	
+	 For each operation, a row in the table shows the following information:
+		○ Operation: A description of the operation, which is derived from either the summary (if present) or description in the OpenAPI file.
+		○ Method: The HTTP method used to send the API request for the operation.
+		○ Resource: The path to the resource the operation acts upon.
+To see more information about an operation, click the 
+		
+		 icon next to its row in the table. The following details are shown:
+		○ Request parameters: The list of input parameters defined for the operation, along with the type of each parameter and whether the parameter is required or optional.
+		○ Response properties: The properties of the response body that are mapped to variables the assistant can access.
+	9. If you are satisfied with the extension, click Finish.
+If you want to change something, delete the extension, edit the JSON file to make your changes, and repeat the import process.
+The new extension is now available as a tile in the Extensions section of the integrations catalog, and you can add it to your assistant.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=developing-building-custom-extension> 
+
+Adding an extension to your assistant
+Last Updated: 2024-11-19
+After you build a custom extension, you must add it to the assistant before it can be accessed by actions.
+Adding the extension to the assistant configures the extension for use within a particular environment, and it makes the extension available so that it can be called from actions.
+You can use different configuration details for each environment. For example, you might want to use the URL for a test server in the draft environment, but a production server in the live environment.
+For information about how to create a custom extension, see Build a custom extension.
+Adding the extension to the draft environment
+To add a custom extension to the assistant, follow these steps:
+	1. On the 
+	 Integrations page, scroll to the Extensions section and find the tile for the custom extension you want to add.
+	2. Click Add. Review the overview of the extension and click Confirm to configure it for your assistant.
+Focus sentinel
+Important
+When you first add an extension to an assistant, the configuration settings you provide are applied only to the draft environment. You must complete configuration for the draft environment before you can add the extension in the live environment. Read the Configuring the extension for the live environment section to learn how to add the custom extension to the live or other environment.
+Focus sentinel
+	3. Read the information in the Get started step, and then click Next.
+	4. In the Authentication step, specify the authentication and server information you want your assistant to use when it calls the service.
+		○ In the Authentication type field, select the type of authentication to use (or No authentication if the API is not authenticated). The available authentication types are determined by the security schemes that are defined in the OpenAPI document.
+		○ Specify the additional information required for the authentication type you selected (such as the username and password, API key, bearer token, or OAuth 2.0 details).
+Focus sentinel
+Tip
+For more information about configuring OAuth 2.0 authentication, see OAuth 2.0 authentication.
+Focus sentinel
+		○ In the Servers field, select the server URL to use.
+If the selected URL contains any variables, also specify the values to use. Depending on how each variable is defined in the OpenAPI document, you can either select from a list of valid values or type the value to use in the field.
+The Generated URL message shows the full URL that the assistant uses, including the variable values.
+Click Next.
+	5. The Review operations table shows the operations that the assistant is able to call from an action step. An operation is a request by using a particular HTTP method, such as GET or POST, on a particular resource.
+	
+	Review operations table
+For each operation, a row in the table shows the following information:
+		○ Operation: A description of the operation, which is derived from either the summary (if present) or description in the OpenAPI file.
+		○ Method: The HTTP method used to send the API request for the operation.
+		○ Resource: The path to the resource the operation acts upon.
+To see more information about an operation, click the 
+		
+		 icon next to its row in the table. The following details are shown:
+		○ Request parameters: The list of input parameters defined for the operation, along with the type of each parameter and whether the parameter is required or optional.
+		○ Response properties: The properties of the response body that are mapped to variables the assistant can access.
+	6. Click Finish.
+	7. Click Close to return to the Integrations page.
+The extension is now connected to your assistant and available for use by actions in the draft environment.
+Managing the extension
+After you add the custom extension to the environment, you can review or replace the OpenAPI document of it, and update the authentication type.
+	1. In the extension, click Open.
+	2. Select the environment where you want to manage the custom extension, and click Confirm.
+	3. In the Manage extension step, you can review and replace the imported OpenAPI document if required. For more information about replacing the OpenAPI document, see Replacing the OpenAPI document.
+	4. In the Authentication tab, you see information about the authentication methods that are defined in the OpenAPI document. The Table. Fields in Authentication tab table gives details about the fields in the Authentication tab:
+	Field name	Description	Values
+	Authentication type	The type of authentication set up in the OpenAPI script.	- OAuth 2.0
+			- Basic Auth
+			- API key auth
+			- Bearer auth
+	Username	The username credential in the OpenAPI script.	For example, user
+	Password	The password credential set up in the OpenAPI script.	For example, Password@123
+	Servers	The link to the server that is defined in the Open API document to connect to the API extension.	For example, https://custom-extension-server.xyz
+OAuth 2.0 authentication
+If you are configuring OAuth 2.0 authentication, the information you must provide depends upon the grant type.
+Focus sentinel
+Tip
+For more information about OAuth 2.0, see OAuth 2.0.
+Focus sentinel
+To complete the OAuth authentication setup, follow these steps:
+	1. If you haven't already, register your application with the external API you want to access. Copy the client ID and client secret that is provided by the external API.
+	2. In the Grant type field, select the grant type that you want to use. Available grant types are determined by flows that are defined in the securitySchemes object in the OpenAPI document. Authorization Code, Client Credentials, Password, and custom grant types that start with x- are supported.
+Focus sentinel
+Note
+The OAuth2 custom grant type x-<any custom name> is used by the IBM IAM authentication mechanism and by watsonx.
+Focus sentinel
+	3. Specify the required values that were provided by the external API when you registered your application. The required values depend on the grant type:
+	Grant type	Required values
+	Authorization Code	        • Client ID
+		        • Client secret
+	Client Credentials	        • Client ID
+		        • Client secret
+	Password	        • Client ID
+		        • Client secret
+		        • Username
+		        • Password
+	x-<any custom name>	        • A list of secret fields mentioned in the openAPI spec file
+	Grant types
+	4. If you are using the Authorization Code grant type, follow these steps:
+		1. Copy the redirect URL from the AI assistant builder extension settings page and paste it into the appropriate field on the application registration page for the external API. (The redirect URL is sometimes called the callback URL.)
+		2. Click Grant Access. You are redirected to the authorization page on the website for the external service. Verify that the correct access is being granted and click to approve. You are then redirected back to the extension setup page by using the redirect URL.
+	5. In the Client authentication field, specify whether the authentication credentials are sent in an HTTP header or as part of the request body. (Credentials that are sent in the request body use the x-www-form-urlencoded content type.) Select the option that is expected by the external service.
+	6. In the Header prefix field, specify the prefix that precedes the access token in the Authorization header. (The default prefix is Bearer, which is typical for most applications.)
+	7. If you are using the custom grant type x-<any custom name> (for example, x-apikey), follow these steps:
+		1. Add the secret values associated with the secret fields.
+		2. Add the optional parameter values, if any.
+Focus sentinel
+Note
+If the external service supports the Refresh Token grant type, AI assistant builder automatically obtains a new access token when the old one expires. If the OpenAPI document defines the refreshUrl attribute, the specified URL is used; otherwise, the tokenUrl URL is used.
+Focus sentinel
+Configuring the extension for the live environment
+To configure the extension for the live environment, follow these steps:
+	1. On the 
+	 Integrations page, scroll to the Extensions section and find the tile for the custom extension you want to add.
+	2. Click Open. The Open custom extension window opens.
+	3. In the Environment field, select Live. Click Confirm.
+	4. Repeat the configuration process, specifying the values that you want to use for the live environment.
+Focus sentinel
+Note
+If you are using multiple environments, follow the same steps to configure the extension for each environment. For more information, see Adding and using multiple environments.
+Focus sentinel
+The extension is now available in the environments that you configured, and it can be called from the assistant. For more information about how to call an extension from an action, see Calling a custom extension.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=developing-adding-extension-your-assistant> 
+
+Elasticsearch search integration set up
+Last Updated: 2025-03-13
+Elasticsearch powers your AI assistant to perform different types of searches such as metric, structured, unstructured, and semantic with higher accuracy and relevance by leveraging enterprise content. The data analytics engine in Elasticsearch expands the scope of search integration to larger data sets in AI assistant. In addition to this integration, you can enable conversational search for Elasticsearch in your AI assistant that helps to answer queries in a conversational manner.
+Focus sentinel
+Important
+You can have only one search integration per environment. When you change the existing search integration to other integration types such as Custom service or Milvus, the settings of the existing search integration are overwritten.
+Focus sentinel
+Selecting Elasticsearch
+To select Elasticsearch as the default search integration, use one of the following procedures:
+	• Selecting Elasticsearch search integration from the Integrations page
+		1. After you create a AI assistant instance, go to Home > Integrations.
+		2. Click Open inside the Search tile to view the "Open Search" window.
+		3. In the "Open Search" window, select the Draft option in the dropdown if you want to set up Elasticsearch in your AI assistant’s draft environment. If you want to set up Elasticsearch in your AI assistant’s live environment, select the Live option in the dropdown.
+		4. In the following "Edit an existing new search integration" window, select the Elasticsearch tile.
+	• Selecting Elasticsearch search integration from the Environments page
+		1. After you create a AI assistant instance, go to Home > Environments.
+		2. Select the Draft tab if you want to set up Elasticsearch in the draft environment. If you want to set up Elasticsearch in the live environment, select the Live tab.
+		3. In the Resolution methods section, click Add inside the Search tile under Extensions if you want to add a new Elasticsearch search integration.
+If you already added the Elasticsearch search integration, you see the Open button instead of Add inside the Search tile under Extensions.
+		4. In the "Set up a new search extension" window, select the Elasticsearch tile to see the "Search integration" dialog.
+Setting up Elasticsearch
+To set up Elasticsearch on your AI assistant, use the following procedure:
+	1. In the first section of the "Search integration" window, provide the following fields to enable your AI assistant to connect to your Elasticsearch instance:
+		○ Elasticsearch url
+		○ Elasticsearch port (optional)
+		○ Choose an authentication type
+			§ If you select Basic authentication, you must provide Elasticsearch username and Elasticsearch password.
+			§ If you select API key, you must provide Elasticsearch API key.
+			§ if you select None, you cannot provide any other authentication details.
+			
+	2. Click Next to go to the Select an index section. Select an index has two options:
+		○ To use an existing index, select Use my index.
+		○ To create a new index, select Upload documents to a new index in your Elasticsearch instance.
+Using an existing index
+	1. In the Select index section, click Use my index to connect to an existing Elasticsearch index. The Use my index option is selected as default in your Elasticsearch set up.
+	2. In the Use my index option, type the Elasticsearch index name.
+	3. Click Next to go to the Enable conversational search (optional) section.
+	4. In the Enable conversational search (optional) section, switch the Conversational Search toggle to on if you want to activate conversational search. If you don't want to activate conversational search, switch the toggle to off. For more information about conversational search, see conversational search.
+	5. Click Save and then Close.
+Uploading documents to a new index (Beta)
+Before you upload documents, your Elasticsearch instance must have the following prerequisites:
+	• Elasticsearch 8.8 or above.
+	• A paid or trial subscription of the Elasticsearch instance such as the Platinum Edition of IBM Cloud Databases for Elasticsearch or the Platinum or Enterprise subscription offered by Elastic.co.
+	• A Machine Learning (ML) node with a minimum of 4 GB memory to deploy the ELSER model. For more information about the ELSER requirements, see ELSER requirements.
+	• The documents that you upload must be in English.
+If your Elasticsearch instance do not have the prerequisites for uploading document, you see the Requirements not met error message.
+Focus sentinel
+Note
+If there is a delay or failure in uploading documents even after having the prerequisites, you can consider scaling the inference performance of the ELSER model deployment by setting up parameters such as number_of_allocations and threads_per_allocation. For more information about scaling the inference performance, see Start trained model deployment API.
+Focus sentinel
+To upload documents to a new index, use the following procedure:
+	1. In the Select index section of the Elasticsearch window, click Upload documents to a new index in your Elasticsearch instance.
+AI assistant passes the uploaded documents to your Elasticsearch instance for storage, chunking, and indexing.
+	2. In the Configure result content section, provide the following fields to map the title, body, and URL to the search response:
+		○ Title
+Search result title. Use the title, name, or similar type of field from the collection as the search result title.
+You must select something for the title or no search result response is displayed in the Facebook and Slack integrations.
+		○ Body
+Search result description. Use an abstract, summary, or highlight field from the collection as the search result body.
+You must select something for the body or no search result response is displayed in the Facebook and Slack integrations.
+		○ URL
+This field can be populated with any footer content that you want to include at the end of the search result.
+When you configure the query body in the Advanced Elasticsearch Settings to search the nested documents, you must ensure that the Title, Body, and URL are from the fields of the inner documents in your Elasticsearch index. For more information about using nested queries, see Elasticsearch nested query.
+	3. Expand the Advanced Elasticsearch settings section to see the following text boxes:
+		○ Configure the filter array for Elasticsearch
+You define the filter as an array of objects so that you can create filters to arrange the content per the query body. For more information, see Configuring the custom filters.
+		○ Configure the query body for Elasticsearch
+The query body is used to manipulate the user requests into a format that the search expects. It controls the query forms, search fields, filters, and query size. In the REST API, the query body is an object representing the POST body for the _search request to Elasticsearch. THe query body has a "$QUERY" token to represent the customer's query, and a "$FILTER" token to represent the array of filters that are defined either in the search settings or at the step level.
+By default, Elasticsearch integration uses keyword search. But you can configure the query body in the Advanced Elasticsearch settings to enable more advanced search techniques such as:
+			§ Semantic search with ELSER
+			§ KNN dense vector search
+			§ Using nested queries to search the nested documents
+			§ Hybrid search
+			§ Search on a semantic text field
+For more information about using different types of query body examples, see Query body examples.
+For more information about the Elasticsearch _search API request body, see Elasticsearch search API request body.
+Focus sentinel
+Important
+You cannot customize the query body in the AI assistant with an existing Elasticsearch configuration.
+Focus sentinel
+	4. Use the Message, No results found and Connectivity issue tabs to customize different messages to share with users based on the successfulness of the search.
+	Tab	Scenario	Example message
+	Message	Search results are returned	I found this information that might be helpful:
+	No results found	No search results are found	I searched my knowledge base for information that might address your query, but did not find anything useful to share.
+	Connectivity issue	I was unable to complete the search for some reason	I might have information that could help address your query, but am unable to search my knowledge base at the moment.
+	Search result messages
+	5. Switch the Conversational Search toggle to on if you want to activate conversational search. If you don't want to activate conversational search, switch the toggle to off.
+	6. If you switch the Conversational Search toggle to on, you can see the citation titles in your assistant responses. For more information about conversational search, see conversational search.
+	7. Click Save to save your settings.
+	8. Click the Documents tab in the Elasticsearch window.
+The Documents tab is enabled only if you select Upload documents to a new index in your Elasticsearch instance option.
+	9. Click Upload button. In the Upload documents section, you can drag and drop your files or do a single click to upload documents directly to your AI assistant.
+Focus sentinel
+Important
+You can upload up to 20 documents at a time. Each document file size must not exceed 25 KB. The total size of all documents must not exceed 50 MB.
+Focus sentinel
+	
+	10. After you upload the documents, you can see the upload status of your documents in a table in the Elasticsearch window.
+	11. Status Ready indicates that your files are available for search.
+	12. If the status indicates Error, you can delete the file by clicking the three dots next to the Error and click Delete.
+	
+	13. Skip this step if you do not want to change Elasticsearch instance credentials. If you want to change the Elasticsearch instance credentials, click the Instance tab, edit the credentials, and then click Save.
+	14. Click Save and then Close to end the Elasticsearch set up.
+Configuring your assistant to use Elasticsearch
+After you configure the Elasticsearch search integration, you must configure your AI assistant to use Elasticsearch when the customer response matches no action. For more information about updating No matches to use search, see Use search when no action matches.
+Testing Elasticsearch
+You can test search integration with Elasticsearch in actions preview, the preview page, or by using the preview link.
+In this example, the user asks, Tell me about a custom extension.
+Search results are pulled from your knowledge base when conversational search is off. The answer is, I searched my knowledge base and found this information which might be useful.
+
+A text-based reply from the best results in your knowledge base displays when conversational search is on.
+
+While IBM values the use of inclusive language, terms that are outside of IBM's direct influence, for the sake of maintaining user understanding, are sometimes required. As other industry leaders join IBM in embracing the use of inclusive language, IBM will continue to update the documentation to reflect those changes.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=search-elasticsearch-integration-set-up> 
+
+
+
+
+Custom service integration setup
+Last Updated: 2025-05-02
+A custom service integration searches for information by using a search capability that you create. You can use a custom service integration with the conversational search capabilities of your AI assistant to generate AI responses. This integration supports both server-side and client-side retrieval of information.
+Focus sentinel
+Important
+You can have only one search integration per environment. When you change the existing search integration to other integration types such as Elasticsearch or Milvus, the settings of the existing search integration are overwritten.
+Focus sentinel
+Selecting custom service
+To select a custom service as the search integration, use one of the following procedures:
+	• Selecting Custom service search integration from the Integrations page
+		1. After you create a AI assistant builder instance, go to Home > Integrations.
+		2. Click Open inside the Search tile to view the "Open Search" window.
+		3. In the "Open Search" window, select the Draft option in the dropdown if you want to set up Custom service in your AI assistant’s draft environment. If you want to set up Custom service in your AI assistant’s live environment, select the Live option in the dropdown.
+		4. In the following "Edit an existing new search integration" window, select the Custom service tile.
+	• Selecting Custom service search integration from the Environments page
+		1. After you create a AI assistant builder instance, go to Home > Environments.
+		2. Select the Draft tab if you want to set up Custom service in the draft environment. If you want to set up Custom service in the live environment, select the Live tab.
+		3. In the Resolution methods section, click Add inside the Search tile under Extensions if you want to add a Custom service search integration.
+Focus sentinel
+Tip
+If you already added the Custom service search integration, you see the Open button instead of Add inside the Search tile under Extensions.
+Focus sentinel
+		4. In the "Set up a new search extension" window, select the Custom service tile to see the "Search integration" dialog.
+		
+Setting up a custom service with server credentials
+To set up Custom service on your AI assistant with server credentials, use the following procedure:
+	1. In the Connect your search provider section of the Custom service window, select By providing credentials. By default, this option is selected.
+	2. Provide the following fields to enable your AI assistant to connect to your Custom service instance:
+		○ URL
+		○ Choose an authentication type
+			§ if you select Basic authentication, you must provide Username and Password.
+			§ if you select API key, you must provide an API key.
+			§ if you select None, you cannot provide any other authentication details.
+	3. Click Next to go to Conversational search (optional).
+	4. If you want to activate conversational search, switch the Conversational Search toggle to on. For more information about conversational search, see conversational search.
+	5. Filling Default filter and Metadata is optional. You can place the information in these fields for your server to perform search requests. The metadata must be a JSON object and the default filter can be a text string. You can override the default filter in an action step that starts the search. You cannot override the metadata through other options and the metadata you provide applies to all uses of this integration. For more information, see filling default filter and metadata for server.
+	6. Use the No results found and Connectivity issue tabs to customize different messages to share with users based on the success of the search.
+	Tab	Scenario	Example message
+	No results found	No search results are found	I searched my knowledge base for information that might address your query, but did not find anything useful to share.
+	Connectivity issue	I was unable to complete the search for some reason	I might have information that could help address your query, but am unable to search my knowledge base at the moment.
+	Custom service search result messages
+	7. Click Save and then Close to end the custom service set up with server credentials.
+	
+Setting up a custom service through your client
+To set up Custom service on your AI assistant through your client, use the following procedure:
+	1. In the Connect your search provider section of the Custom service window, select “Through your client”.
+	2. Click Next to go to Conversational search (optional).
+	3. If you want to activate conversational search, switch the Conversational Search toggle to on. For more information about conversational search, see conversational search.
+	4. Filling Default filter and Metadata is optional. You can place the information in these fields for your server to perform search requests. The metadata must be a JSON object and the default filter can be a text string. You can override the default filter in an action step that starts the search. You cannot override the metadata through other options and the metadata you provide applies to all uses of this integration. For more information, see filling default filter and metadata for client.
+	5. Use the No results found and Connectivity issue tabs to customize different messages to share with users based on the success of the search.
+	Tab	Scenario	Example message
+	No results found	No search results are found	I searched my knowledge base for information that might address your query, but did not find anything useful to share.
+	Connectivity issue	I was unable to complete the search for some reason	I might have information that could help address your query, but am unable to search my knowledge base at the moment.
+	Custom service search result messages
+	6. Click Save and then Close to end the custom service set up in the client-side.
+Setting up Milvus for Custom service
+Milvus is a vector database that you can use for handling large-scale datasets. For applications requiring real-time search capabilities and numerous concurrent users, you can use Milvus, which has a distributed architecture, high performance, and flexible data model.
+You can directly integrate with your watsonx.data Milvus for Conversational search than using a custom service. For more information, see Milvus search integration setup.
+You need to use the Custom service search, to avail more advanced search capabilities with Milvus such as:
+	• Flexibility to use any Milvus supported and watsonx.ai supported embedding models. For a list of embedding models supported by Milvus, see Milvus supported embedding models.
+	• Multi-vector hybrid search.
+	• Reranking.
+Setting up Milvus with server credentials
+	1. For setting up watsonx.data Milvus, see the Guide for setting up the search integration with watsonx.data Milvus.
+	2. For general set up on your assistant with server credentials, see Setting up a Custom service with server credentials.
+	3. For more information on examples and references for Milvus, see Example with Milvus.
+Setting up Milvus through your client
+Set up Milvus on your AI assistant through your client by following the steps mentioned in Setting up a Custom service through your client.
+Setting up retrieval systems for a Custom service
+To use a custom service with your search integration, you must integrate your search capability by providing a server or by having the client that calls your AI assistant to provide search results. You can use your own retrieval if the retrieval schema matches with the schema that is provided by your AI assistant. If your retrieval schema does not match with the AI assistant’s schema, you must provide a wrapper that does the schema mapping. You can deploy the wrapper as a service or your chat client can start it. Building a wrapper is useful when you want to combine a different source or invoking libraries or services that do not comply with the schema for AI assistant search results.
+Setting up a server for custom service retrieval
+A server for custom service retrieval must implement the following API:
+Query: POST <server_url>
+Request
+{
+    "query": "<QUERY>",
+    "filter": "<FILTER>", // optional
+    "metadata": {
+        // optional, you can fill any information here
+    }
+}
+
+
+Response
+{
+    
+  "search_results": [
+    {
+      "result_metadata": { // optional
+        "score": <SCORE as a number>
+      },
+      "title": "<TITLE>",
+      "body": "<BODY>",
+      "url": "<URL>", // optional
+      "highlight": { // optional, will be used instead of "body" for Conversational Search if provided
+        "body": [
+          "<HIGHLIGHT1>",
+          "<HIGHLIGHT2>",
+           ...
+        ]
+      }
+    }
+  ]
+}
+
+
+Focus sentinel
+Important
+The metadata in the request and the entire response object must not exceed 100 KB.
+Focus sentinel
+Setting up a client for custom service retrieval
+You can see the following API response from the /message API requesting search at run time:
+{
+    "output": {
+        "intents": [ ... ],
+        "actions": [
+            {
+                "type": "search",
+                "query": "<QUERY>",
+                "filter": "<FILTER>",
+                "metadata": { // optional
+                    /* you can use any JSON object here */
+                }
+            }
+        ]
+    }
+}
+
+
+Whenever the chat client receives a response with that form (it has an entry in the output.actions list of type search), it passes the results back to the AI assistant through the next call to the /message API as follows:
+{
+    "input": {
+        "message_type": "search_results",
+         "search_results": [
+          {
+            "result_metadata": { // optional
+                "score": <SCORE as a number>
+            },
+            "title": "<TITLE>",
+            "body": "<BODY>",
+            "url": "<URL>", // optional
+            "highlight": { // optional, will be used instead of "body" for Conversational Search if provided
+                "body": [
+                "<HIGHLIGHT1>",
+                "<HIGHLIGHT2>",
+                ...
+                ]
+            }
+         }
+     ]
+  }
+}
+
+
+Focus sentinel
+Important
+Your AI assistant response limit cannot exceed 100 KB. If your AI assistant gets a search_resultsmessage with a body that exceeds 100 KB, it returns a 400 response.
+Focus sentinel
+Processing the search results in conversational search
+When you setup your custom service by providing server credentials or by sending results from your client and if you enable conversational search with your custom service, you get the following behavior:
+	1. Conversational search iterates through the search results from first to last.
+	2. From each search result:
+		○ If you don't have a highlight.body list, it takes the body as a text snippet.
+		○ If a highlight.body list is present, it takes each element in that list as a text snippet.
+	3. After discarding the duplicate text snippets, it continues to iterate through the search results and highlight.body lists until it has 5 text snippets.
+	4. Conversational search applies a pre-generation filter model to compare the query and the search results to judge the relevance of the results to the query. If pre-generation filter model produces two scores:
+		○ A low score, conversational search returns an I don't know signal. For more information on I don't know signal, see conversational search.
+		○ A high score, conversational search sends the snippets along with the corresponding titles to the generative AI model to generate an answer.
+	5. If the text is too long for the generative AI model to process, it repeatedly discards the last snippet or title pair until it is short. When it has no text, the search fails.
+	6. Conversational search applies the response to the post-filter model. If the post-filter model produces two scores:
+		○ A low score, conversational search returns an I don't know signal.
+		○ A high score, conversational search returns the generated response along with all the search_results to the calling application.
+Your AI assistant follows the same process for the other search options like Elasticsearch.
+Adding separate fields for body and highlight.body
+When the highlight.body is present, it is used to generate conversational search answers, else the body is used. Both are passed to the client as part of the search results object and the client provides context for the answer. For example, the built-in web chat shows the body text. If you click a citation card for some search result, you can't see a URL for that search result.
+Recommendations for using the fields:
+	• If the search technology returns short portions of documents, use those portions of the documents in the body field and omit the highlight.body. For example, many vector database solutions store only 512 token segments of documents.
+	• If the search technology returns both short portions of documents (“passages” or “highlights” or “snippets”) and the full text of the documents, use the short portions in the highlight.body field and use the full text in the body field.
+Adding optional user-defined metadata 
+For both clients and servers, the schemas for results include a metadata field and a result_metadata field.
+Recommendations for using the fields:
+	• The metadata field sends the configuration information to the search capability. Some examples of configuration information that is used for a search capability include index names, embedding model names, requested passage length, fields to boost, and so on. The following reasons explain why it is helpful to use the metadata field to pass configuration information to the server or client:
+		○ Multiple assistants can use the same server or client code but with a different configuration.
+		○ Even with one assistant, it is easy to update configurations through the assistant interface.
+	• The result_metadata field sends additional information about a search result from the server or client to the AI assistant. The AI assistant passes the information as part of the search_results object in the final response. Calling applications use the additional information. For example, when the result_metadata sends the URLs for images in the search result, the calling application renders the images along with the response.
+
+From <https://www.ibm.com/docs/en/watsonx/watson-orchestrate/base?topic=search-custom-service-integration-setup> 
+

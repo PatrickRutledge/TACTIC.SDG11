@@ -1,0 +1,1451 @@
+{
+  "commands": {
+    "deploy": {
+      "aliases": [],
+      "args": {},
+      "description": "Deploy to Flows Engine.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Working directory [default: current directory]",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "helpValue": "DIRECTORY",
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "deploy",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "deploy.js"
+      ]
+    },
+    "init": {
+      "aliases": [],
+      "args": {},
+      "description": "Initialize a Flows Engine workspace in the current directory.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Directory for a new workspace [default: current directory]",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "helpValue": "DIRECTORY",
+          "multiple": false,
+          "type": "option"
+        },
+        "endpoint": {
+          "description": "Endpoint name (e.g. api/myapp)",
+          "name": "endpoint",
+          "hasDynamicHelp": false,
+          "helpValue": "MY/ENDPOINT",
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "init",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "init.js"
+      ]
+    },
+    "login": {
+      "aliases": [],
+      "args": {
+        "domain": {
+          "default": "us-east-a.ibm.stepzen.net",
+          "description": "Domain of the Flows Engine service to login to (e.g. us-east-a.ibm.stepzen.net or eu-central-a.ibm.stepzen.net). Check your domain at https://wxflows.ibm.stepzen.com",
+          "name": "domain",
+          "required": false
+        }
+      },
+      "description": "Log in to Flows Engine.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "environment": {
+          "char": "e",
+          "description": "Flows Engine environment name (copy from https://wxflows.ibm.stepzen.com). If not provided, the CLI prompts the users to enter one.",
+          "exclusive": [
+            "config"
+          ],
+          "name": "environment",
+          "hasDynamicHelp": false,
+          "helpValue": "ENVIRONMENT",
+          "multiple": false,
+          "type": "option"
+        },
+        "adminkey": {
+          "char": "k",
+          "description": "Admin key (copy from https://wxflows.ibm.stepzen.com). If not provided, the CLI prompts the users to enter one.",
+          "exclusive": [
+            "config"
+          ],
+          "name": "adminkey",
+          "hasDynamicHelp": false,
+          "helpValue": "ADMIN-KEY",
+          "multiple": false,
+          "type": "option"
+        },
+        "introspection": {
+          "description": "Override the default Flows Engine introspection service URL for all wxflows import commands. If not provided, use the default introspection URL.\n\nExample:\nwxflows login --introspection introspection.mydomain.com",
+          "name": "introspection",
+          "hasDynamicHelp": false,
+          "helpValue": "INTROSPECTION-URL",
+          "multiple": false,
+          "type": "option"
+        },
+        "config": {
+          "exclusive": [
+            "account",
+            "adminkey"
+          ],
+          "hidden": true,
+          "name": "config",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "login",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "login.js"
+      ]
+    },
+    "logout": {
+      "aliases": [],
+      "args": {},
+      "description": "Log out of Flows Engine.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "logout",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "logout.js"
+      ]
+    },
+    "whoami": {
+      "aliases": [],
+      "args": {},
+      "description": "View your StepZen credentials.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "account": {
+          "exclusive": [
+            "environment",
+            "domain",
+            "adminkey",
+            "apikey",
+            "showkeys",
+            "endpoint-url",
+            "sdk-env",
+            "json"
+          ],
+          "hidden": true,
+          "name": "account",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "environment": {
+          "exclusive": [
+            "account",
+            "domain",
+            "adminkey",
+            "apikey",
+            "showkeys",
+            "endpoint-url",
+            "sdk-env",
+            "json"
+          ],
+          "name": "environment",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "domain": {
+          "exclusive": [
+            "account",
+            "environment",
+            "adminkey",
+            "apikey",
+            "showkeys",
+            "endpoint-url",
+            "sdk-env",
+            "json"
+          ],
+          "name": "domain",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "adminkey": {
+          "exclusive": [
+            "account",
+            "environment",
+            "domain",
+            "apikey",
+            "showkeys",
+            "endpoint-url",
+            "sdk-env",
+            "json"
+          ],
+          "name": "adminkey",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "apikey": {
+          "exclusive": [
+            "account",
+            "environment",
+            "domain",
+            "adminkey",
+            "showkeys",
+            "endpoint-url",
+            "sdk-env",
+            "json"
+          ],
+          "name": "apikey",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "showkeys": {
+          "exclusive": [
+            "account",
+            "environment",
+            "domain",
+            "adminkey",
+            "apikey",
+            "endpoint-url",
+            "sdk-env",
+            "json"
+          ],
+          "name": "showkeys",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "endpoint-url": {
+          "exclusive": [
+            "account",
+            "environment",
+            "domain",
+            "adminkey",
+            "apikey",
+            "showkeys",
+            "sdk-env",
+            "json"
+          ],
+          "name": "endpoint-url",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "sdk-env": {
+          "exclusive": [
+            "account",
+            "environment",
+            "domain",
+            "adminkey",
+            "apikey",
+            "showkeys",
+            "endpoint-url",
+            "json"
+          ],
+          "name": "sdk-env",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "json": {
+          "exclusive": [
+            "account",
+            "environment",
+            "domain",
+            "adminkey",
+            "apikey",
+            "showkeys",
+            "endpoint-url",
+            "sdk-env"
+          ],
+          "name": "json",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "whoami",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "whoami.js"
+      ]
+    },
+    "import:curl": {
+      "aliases": [],
+      "args": {},
+      "description": "Import a schema for a REST endpoint into your GraphQL API (uses the curl syntax).\n\nwxflows import curl automatically introspects a REST endpoint, generates a GraphQL schema for accessing this endpoint through a Flows Engine API, and adds the generated types and a query field into your GraphQL schema.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Working directory",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "silent": {
+          "description": "This is an internal flag passed by the (no-arg) Import command when it launches a data-source specific import command. The intent is to avoid showing a welcome message twice (if its already been shown by the (no-arg) Import command).",
+          "hidden": true,
+          "name": "silent",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Subfolder inside the workspace folder to save the imported schema files to. Defaults to the name of the imported schema.",
+          "name": "name",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "overwrite": {
+          "dependsOn": [
+            "name"
+          ],
+          "description": "Overwrite any existing schema with the same name. Cannot be used without also providing a --name flag.",
+          "hidden": true,
+          "name": "overwrite",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "prefix": {
+          "description": "Prefix to add to every type in the generated schema",
+          "name": "prefix",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "data": {
+          "aliases": [
+            "data-ascii",
+            "data-raw",
+            "data-binary"
+          ],
+          "char": "d",
+          "hidden": true,
+          "name": "data",
+          "hasDynamicHelp": false,
+          "multiple": true,
+          "type": "option"
+        },
+        "request": {
+          "char": "X",
+          "hidden": true,
+          "name": "request",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "url": {
+          "hidden": true,
+          "name": "url",
+          "hasDynamicHelp": false,
+          "multiple": true,
+          "type": "option"
+        },
+        "header": {
+          "char": "H",
+          "description": "Specifies a request header to pass\n\nExample:\nstepzen import curl https://example.com/api/customers \\\n\t-H \"Authorization: apikey SecretAPIKeyValue\"",
+          "name": "header",
+          "hasDynamicHelp": false,
+          "multiple": true,
+          "type": "option"
+        },
+        "header-param": {
+          "description": "Specifies a parameter in a header value. Can be formed by taking a -H, --header flag and replacing the variable part of the header value with a $paramName placeholder. Repeat this flag once for each header with a parameter.\n\nExample:\nstepzen import curl https://example.com/api/customers \\\n\t-H \"Authorization: apikey SecretAPIKeyValue\" \\\n\t--header-param 'Authorization: apikey $apikey'",
+          "name": "header-param",
+          "hasDynamicHelp": false,
+          "multiple": true,
+          "type": "option"
+        },
+        "query-name": {
+          "description": "Property name to add to the Query type as a way to access the imported endpoint",
+          "name": "query-name",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "query-type": {
+          "description": "Name for the type returned by the curl request in the generated schema. The name specified by --query-type is not prefixed by --prefix if both flags are present.",
+          "name": "query-type",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "path-params": {
+          "description": "Specifies path parameters in the URL path. Can be formed by taking the original path and replacing the variable segments with $paramName placeholders.\n\nExample:\nstepzen import curl https://example.com/users/jane/posts/12 --path-params '/users/$userId/posts/$postId'",
+          "name": "path-params",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "import:curl",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": false,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "import",
+        "curl.js"
+      ]
+    },
+    "import:db2": {
+      "aliases": [],
+      "args": {
+        "jdbcUrl": {
+          "description": "(optional) JDBC URL of a Db2 database.\nExample: 'jdbc:db2://host:port/db:user=username;password=password;schema=schema;sslConnection=true/false;'\n\nThe --db-schema flag overrides the schema part of the JDBC URL (if both are provided).",
+          "name": "jdbcUrl"
+        }
+      },
+      "description": "Import a schema for a Db2 data source into your GraphQL API.\n\nwxflows import db2 automatically introspects a Db2 database, generates a GraphQL schema for accessing this database through a Flows Engine API, and merges the generated types, queries and mutations into your GraphQL schema.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Working directory",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "silent": {
+          "description": "This is an internal flag passed by the (no-arg) Import command when it launches a data-source specific import command. The intent is to avoid showing a welcome message twice (if its already been shown by the (no-arg) Import command).",
+          "hidden": true,
+          "name": "silent",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Subfolder inside the workspace folder to save the imported schema files to. Defaults to the name of the imported schema.",
+          "name": "name",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "overwrite": {
+          "dependsOn": [
+            "name"
+          ],
+          "description": "Overwrite any existing schema with the same name. Cannot be used without also providing a --name flag.",
+          "hidden": true,
+          "name": "overwrite",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "db-schema": {
+          "description": "Database schema to import tables from (default: public)",
+          "name": "db-schema",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-link-types": {
+          "description": "Automatically link types based on foreign key relationships using @materializer (https://stepzen.com/docs/features/linking-types)",
+          "name": "db-link-types",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "db-include": {
+          "description": "Should the generated GraphQL schema be based only on database views, only on tables or on both",
+          "name": "db-include",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "options": [
+            "tables-only",
+            "views-only",
+            "tables-and-views"
+          ],
+          "type": "option"
+        },
+        "db-use-deprecated-2022-naming": {
+          "description": "Use the deprecated pre-2023 naming convention in the generated GraphQL schema:\n\t- the generated type and property names are auto-capitalized into PascalCase\n\t- the generated field names use the getCustomer and getCustomerList style.\n\nOn the other hand, when using the default naming convention:\n\t- the generated type and property names match exactly the DB table and column names\n\t- the generated field names use the customer and customerList style.",
+          "name": "db-use-deprecated-2022-naming",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "import:db2",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": false,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "import",
+        "db2.js"
+      ]
+    },
+    "import:flow": {
+      "aliases": [],
+      "args": {
+        "flow": {
+          "name": "flow"
+        }
+      },
+      "description": "Import Flows Engine flow expression as a query field into your GraphQL API.\n\nwxflows import flow automatically introspects a GraphQL endpoint and adds a @sequence implementing the given flow expression into your GraphQL schema.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Working directory",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "silent": {
+          "description": "This is an internal flag passed by the (no-arg) Import command when it launches a data-source specific import command. The intent is to avoid showing a welcome message twice (if its already been shown by the (no-arg) Import command).",
+          "hidden": true,
+          "name": "silent",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Subfolder inside the workspace folder to save the imported schema files to. Defaults to the name of the imported schema.",
+          "name": "name",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "overwrite": {
+          "dependsOn": [
+            "name"
+          ],
+          "description": "Overwrite any existing schema with the same name. Cannot be used without also providing a --name flag.",
+          "hidden": true,
+          "name": "overwrite",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "header": {
+          "char": "H",
+          "dependsOn": [
+            "endpoint"
+          ],
+          "description": "Specifies a request header to pass\n\nExample:\nstepzen import curl https://example.com/api/customers \\\n\t-H \"Authorization: apikey SecretAPIKeyValue\"",
+          "name": "header",
+          "hasDynamicHelp": false,
+          "multiple": true,
+          "type": "option"
+        },
+        "endpoint": {
+          "description": "Use a custom GraphQL schema instead of the project's schema as the schema providing the steps in the flow.",
+          "name": "endpoint",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "import:flow",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": false,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "import",
+        "flow.js"
+      ]
+    },
+    "import:graphql": {
+      "aliases": [],
+      "args": {
+        "url": {
+          "name": "url"
+        }
+      },
+      "description": "Import a GraphQL API as a subgraph into your GraphQL API.\n\nwxflows import graphql automatically introspects a GraphQL endpoint and merges the types, queries, mutations and subscriptions for accessing this endpoint through a Flows Engine API into your GraphQL schema.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Working directory",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "silent": {
+          "description": "This is an internal flag passed by the (no-arg) Import command when it launches a data-source specific import command. The intent is to avoid showing a welcome message twice (if its already been shown by the (no-arg) Import command).",
+          "hidden": true,
+          "name": "silent",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Subfolder inside the workspace folder to save the imported schema files to. Defaults to the name of the imported schema.",
+          "name": "name",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "overwrite": {
+          "dependsOn": [
+            "name"
+          ],
+          "description": "Overwrite any existing schema with the same name. Cannot be used without also providing a --name flag.",
+          "hidden": true,
+          "name": "overwrite",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "prefix": {
+          "description": "Prefix to add to every type in the generated schema",
+          "name": "prefix",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "header": {
+          "char": "H",
+          "description": "Specifies a request header to pass\n\nExample:\nstepzen import curl https://example.com/api/customers \\\n\t-H \"Authorization: apikey SecretAPIKeyValue\"",
+          "name": "header",
+          "hasDynamicHelp": false,
+          "multiple": true,
+          "type": "option"
+        },
+        "header-param": {
+          "description": "Specifies a parameter in a header value. Can be formed by taking a -H, --header flag and replacing the variable part of the header value with a $paramName placeholder. Repeat this flag once for each header with a parameter.\n\nExample:\nstepzen import curl https://example.com/api/customers \\\n\t-H \"Authorization: apikey SecretAPIKeyValue\" \\\n\t--header-param 'Authorization: apikey $apikey'",
+          "name": "header-param",
+          "hasDynamicHelp": false,
+          "multiple": true,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "import:graphql",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": false,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "import",
+        "graphql.js"
+      ]
+    },
+    "import": {
+      "aliases": [],
+      "args": {
+        "source": {
+          "description": "kind of the data source: curl, graphql, mysql, postgresql, snowflake, db2, oracle (or a full DSN string)",
+          "name": "source"
+        }
+      },
+      "description": "Import a schema for an external data source or an API endpoint into your GraphQL API.\nSee more details with wxflows import [SOURCE] --help",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Working directory",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "import",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": false,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "import",
+        "index.js"
+      ]
+    },
+    "import:mysql": {
+      "aliases": [],
+      "args": {
+        "dsn": {
+          "description": "(optional) Data Source Name (DSN) of a MySQL database.\nExample: mysql://user:password@host:port/database\n\nFlags, such as --db-host, override the corresponding parts of the DSN (if both are provided).",
+          "name": "dsn"
+        }
+      },
+      "description": "Import a schema for a MySQL data source into your GraphQL API.\n\nwxflows import mysql automatically introspects a MySQL database, generates a GraphQL schema for accessing this database through a Flows Engine API, and merges the generated types, queries and mutations into your into your GraphQL schema.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Working directory",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "silent": {
+          "description": "This is an internal flag passed by the (no-arg) Import command when it launches a data-source specific import command. The intent is to avoid showing a welcome message twice (if its already been shown by the (no-arg) Import command).",
+          "hidden": true,
+          "name": "silent",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Subfolder inside the workspace folder to save the imported schema files to. Defaults to the name of the imported schema.",
+          "name": "name",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "overwrite": {
+          "dependsOn": [
+            "name"
+          ],
+          "description": "Overwrite any existing schema with the same name. Cannot be used without also providing a --name flag.",
+          "hidden": true,
+          "name": "overwrite",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "db-host": {
+          "description": "Database host and optional port (as HOST[:PORT])",
+          "name": "db-host",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-user": {
+          "description": "Database user name",
+          "name": "db-user",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-password": {
+          "description": "Database password",
+          "name": "db-password",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-database": {
+          "description": "Name of database to import",
+          "name": "db-database",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-link-types": {
+          "description": "Automatically link types based on foreign key relationships using @materializer (https://stepzen.com/docs/features/linking-types)",
+          "name": "db-link-types",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "db-include": {
+          "description": "Should the generated GraphQL schema be based only on database views, only on tables or on both",
+          "name": "db-include",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "options": [
+            "tables-only",
+            "views-only",
+            "tables-and-views"
+          ],
+          "type": "option"
+        },
+        "db-use-deprecated-2022-naming": {
+          "description": "Use the deprecated pre-2023 naming convention in the generated GraphQL schema:\n\t- the generated type and property names are auto-capitalized into PascalCase\n\t- the generated field names use the getCustomer and getCustomerList style.\n\nOn the other hand, when using the default naming convention:\n\t- the generated type and property names match exactly the DB table and column names\n\t- the generated field names use the customer and customerList style.",
+          "name": "db-use-deprecated-2022-naming",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "import:mysql",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": false,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "import",
+        "mysql.js"
+      ]
+    },
+    "import:oracle": {
+      "aliases": [],
+      "args": {
+        "jdbcUrl": {
+          "description": "(optional) JDBC URL of an Oracle database.\nExample: 'jdbc:oracle:thin:user/password@//host:port/db?currentschema=schema'\n\nThe --db-schema flag overrides the schema part of the JDBC URL (if both are provided).",
+          "name": "jdbcUrl"
+        }
+      },
+      "description": "Import a schema for a oracle data source into your GraphQL API.\n\nwxflows import oracle automatically introspects an Oracle database, generates a GraphQL schema for accessing this database through a Flows Engine API, and merges the generated types, queries and mutations into your GraphQL schema.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Working directory",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "silent": {
+          "description": "This is an internal flag passed by the (no-arg) Import command when it launches a data-source specific import command. The intent is to avoid showing a welcome message twice (if its already been shown by the (no-arg) Import command).",
+          "hidden": true,
+          "name": "silent",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Subfolder inside the workspace folder to save the imported schema files to. Defaults to the name of the imported schema.",
+          "name": "name",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "overwrite": {
+          "dependsOn": [
+            "name"
+          ],
+          "description": "Overwrite any existing schema with the same name. Cannot be used without also providing a --name flag.",
+          "hidden": true,
+          "name": "overwrite",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "db-schema": {
+          "description": "Database schema to import tables from (default: public)",
+          "name": "db-schema",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-link-types": {
+          "description": "Automatically link types based on foreign key relationships using @materializer (https://stepzen.com/docs/features/linking-types)",
+          "name": "db-link-types",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "db-include": {
+          "description": "Should the generated GraphQL schema be based only on database views, only on tables or on both",
+          "name": "db-include",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "options": [
+            "tables-only",
+            "views-only",
+            "tables-and-views"
+          ],
+          "type": "option"
+        },
+        "db-use-deprecated-2022-naming": {
+          "description": "Use the deprecated pre-2023 naming convention in the generated GraphQL schema:\n\t- the generated type and property names are auto-capitalized into PascalCase\n\t- the generated field names use the getCustomer and getCustomerList style.\n\nOn the other hand, when using the default naming convention:\n\t- the generated type and property names match exactly the DB table and column names\n\t- the generated field names use the customer and customerList style.",
+          "name": "db-use-deprecated-2022-naming",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "import:oracle",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": false,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "import",
+        "oracle.js"
+      ]
+    },
+    "import:postgresql": {
+      "aliases": [],
+      "args": {
+        "dsn": {
+          "description": "(optional) Data Source Name (DSN) of a PostgreSQL database.\nExample: postgresql://user:password@host:port/database?schema=schema\n\nFlags, such as --db-host, override the corresponding parts of the DSN (if both are provided).",
+          "name": "dsn"
+        }
+      },
+      "description": "Import a schema for a PostgreSQL data source into your GraphQL API.\n\nwxflows import postgresql automatically introspects a PostgreSQL database, generates a GraphQL schema for accessing this database through a Flows Engine API, and merges the generated types, queries and mutations into your GraphQL schema.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Working directory",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "silent": {
+          "description": "This is an internal flag passed by the (no-arg) Import command when it launches a data-source specific import command. The intent is to avoid showing a welcome message twice (if its already been shown by the (no-arg) Import command).",
+          "hidden": true,
+          "name": "silent",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Subfolder inside the workspace folder to save the imported schema files to. Defaults to the name of the imported schema.",
+          "name": "name",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "overwrite": {
+          "dependsOn": [
+            "name"
+          ],
+          "description": "Overwrite any existing schema with the same name. Cannot be used without also providing a --name flag.",
+          "hidden": true,
+          "name": "overwrite",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "db-host": {
+          "description": "Database host and optional port (as HOST[:PORT])",
+          "name": "db-host",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-user": {
+          "description": "Database user name",
+          "name": "db-user",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-password": {
+          "description": "Database password",
+          "name": "db-password",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-database": {
+          "description": "Name of database to import",
+          "name": "db-database",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-schema": {
+          "description": "Database schema to import tables from (default: public)",
+          "name": "db-schema",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-link-types": {
+          "description": "Automatically link types based on foreign key relationships using @materializer (https://stepzen.com/docs/features/linking-types)",
+          "name": "db-link-types",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "db-include": {
+          "description": "Should the generated GraphQL schema be based only on database views, only on tables or on both",
+          "name": "db-include",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "options": [
+            "tables-only",
+            "views-only",
+            "tables-and-views"
+          ],
+          "type": "option"
+        },
+        "db-use-deprecated-2022-naming": {
+          "description": "Use the deprecated pre-2023 naming convention in the generated GraphQL schema:\n\t- the generated type and property names are auto-capitalized into PascalCase\n\t- the generated field names use the getCustomer and getCustomerList style.\n\nOn the other hand, when using the default naming convention:\n\t- the generated type and property names match exactly the DB table and column names\n\t- the generated field names use the customer and customerList style.",
+          "name": "db-use-deprecated-2022-naming",
+          "allowNo": false,
+          "type": "boolean"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "import:postgresql",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": false,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "import",
+        "postgresql.js"
+      ]
+    },
+    "import:snowflake": {
+      "aliases": [],
+      "args": {
+        "dsn": {
+          "description": "(optional) Data Source Name (DSN) of a Snowflake database.\nExample: snowflake://user:password@orgname-accountname/database?warehouse=warehouse&schema=schema\n\nFlags, such as --db-host, override the corresponding parts of the DSN (if both are provided).",
+          "name": "dsn"
+        }
+      },
+      "description": "Import a schema for a Snowflake data source into your GraphQL API.\n\nwxflows import snowflake automatically introspects a Snowflake database, generates a GraphQL schema for accessing this database through a Flows Engine API, and merges the generated types, queries and mutations into your GraphQL schema.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Working directory",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "silent": {
+          "description": "This is an internal flag passed by the (no-arg) Import command when it launches a data-source specific import command. The intent is to avoid showing a welcome message twice (if its already been shown by the (no-arg) Import command).",
+          "hidden": true,
+          "name": "silent",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Subfolder inside the workspace folder to save the imported schema files to. Defaults to the name of the imported schema.",
+          "name": "name",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "overwrite": {
+          "dependsOn": [
+            "name"
+          ],
+          "description": "Overwrite any existing schema with the same name. Cannot be used without also providing a --name flag.",
+          "hidden": true,
+          "name": "overwrite",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "db-user": {
+          "description": "Database user name",
+          "name": "db-user",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-password": {
+          "description": "Database password",
+          "name": "db-password",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-database": {
+          "description": "Name of database to import",
+          "name": "db-database",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-schema": {
+          "description": "Database schema to import tables from (default: PUBLIC)",
+          "name": "db-schema",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "db-link-types": {
+          "description": "Automatically link types based on foreign key relationships using @materializer (https://stepzen.com/docs/features/linking-types)",
+          "name": "db-link-types",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "db-include": {
+          "description": "Should the generated GraphQL schema be based only on database views, only on tables or on both",
+          "name": "db-include",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "options": [
+            "tables-only",
+            "views-only",
+            "tables-and-views"
+          ],
+          "type": "option"
+        },
+        "db-use-deprecated-2022-naming": {
+          "description": "Use the deprecated pre-2023 naming convention in the generated GraphQL schema:\n\t- the generated type and property names are auto-capitalized into PascalCase\n\t- the generated field names use the getCustomer and getCustomerList style.\n\nOn the other hand, when using the default naming convention:\n\t- the generated type and property names match exactly the DB table and column names\n\t- the generated field names use the customer and customerList style.",
+          "name": "db-use-deprecated-2022-naming",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "snowflake-account-id": {
+          "description": "Snowflake account identifier in the orgname-accountname format. For more information, see the Snowflake documentation at https://docs.snowflake.com/en/user-guide/admin-account-identifier.html.",
+          "name": "snowflake-account-id",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        },
+        "snowflake-warehouse": {
+          "description": "Snowflake warehouse",
+          "name": "snowflake-warehouse",
+          "hasDynamicHelp": false,
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "import:snowflake",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": false,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "import",
+        "snowflake.js"
+      ]
+    },
+    "import:tool": {
+      "aliases": [],
+      "args": {
+        "uri": {
+          "description": "Import a tool into your Flows Engine workspace.",
+          "name": "uri",
+          "required": true
+        }
+      },
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Working directory [default: current directory]",
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "helpValue": "DIRECTORY",
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "import:tool",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "import",
+        "tool.js"
+      ]
+    },
+    "tools": {
+      "aliases": [
+        "tools:list",
+        "tools:ls"
+      ],
+      "args": {},
+      "description": "List deployed tools.",
+      "flags": {
+        "help": {
+          "char": "h",
+          "description": "Show CLI help",
+          "name": "help",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "non-interactive": {
+          "description": "Disable all interactive prompts",
+          "name": "non-interactive",
+          "allowNo": false,
+          "type": "boolean"
+        },
+        "dir": {
+          "description": "Flows Engine workspace [default: current directory]",
+          "exclusive": [
+            "endpoint"
+          ],
+          "name": "dir",
+          "hasDynamicHelp": false,
+          "helpValue": "DIRECTORY",
+          "multiple": false,
+          "type": "option"
+        },
+        "endpoint": {
+          "description": "Deployed Flows Engine endpoint (e.g. api/endpoint)",
+          "exclusive": [
+            "dir"
+          ],
+          "name": "endpoint",
+          "hasDynamicHelp": false,
+          "helpValue": "ENDPOINT",
+          "multiple": false,
+          "type": "option"
+        }
+      },
+      "hasDynamicHelp": false,
+      "hiddenAliases": [],
+      "id": "tools",
+      "pluginAlias": "wxflows",
+      "pluginName": "wxflows",
+      "pluginType": "core",
+      "strict": true,
+      "enableJsonFlag": false,
+      "isESM": true,
+      "relativePath": [
+        "dist",
+        "commands",
+        "tools",
+        "index.js"
+      ]
+    }
+  },
+  "version": "2.0.0"
+}

@@ -1,0 +1,76 @@
+{
+  "system_name": "Public Discourse Multi-Agent Debate System",
+  "description": "A system of specialized agents that collaborate to facilitate meaningful debates on complex topics, presenting diverse perspectives with evidence-based reasoning.",
+  "version": "1.0.0",
+  "agents": {
+    "moderator": {
+      "name": "ModeratorAgent",
+      "description": "An agent that facilitates structured debates, manages speaking turns, enforces debate rules, and ensures fair representation of all perspectives.",
+      "style": "default",
+      "agent_file": "moderator_agent.yaml"
+    },
+    "perspectives": [
+      {
+        "name": "ProgressivePerspectiveAgent",
+        "description": "An agent representing progressive perspectives in debates, emphasizing social change, equality, and reform-oriented approaches.",
+        "style": "default",
+        "agent_file": "progressive_agent.yaml"
+      },
+      {
+        "name": "ConservativePerspectiveAgent",
+        "description": "An agent representing traditional and conservative perspectives in debates, emphasizing values of tradition, social order, and established institutions.",
+        "style": "default",
+        "agent_file": "conservative_agent.yaml"
+      },
+      {
+        "name": "SimpleDebateAgent",
+        "description": "A simplified agent that facilitates debates with multiple perspectives on complex topics.",
+        "style": "default",
+        "agent_file": "simple_agent.yaml"
+      },
+      {
+        "name": "PlannerDebateAgent",
+        "description": "A debate facilitator that uses the planner style to guide structured debates on complex topics.",
+        "style": "planner",
+        "agent_file": "planner_agent.yaml"
+      },
+      {
+        "name": "ViewpointExplorer",
+        "description": "A conversational agent designed to engage users in a discussion to determine their viewpoint on a particular topic.",
+        "style": "default",
+        "agent_file": "viewpoint_explorer.yaml"
+      }
+    ]
+  },
+  "debate_formats": {
+    "structured": {
+      "description": "A formal debate with clear rules, timed responses, and organized structure.",
+      "rounds": [
+        "opening_statements",
+        "cross_examination",
+        "rebuttal",
+        "closing_statements"
+      ]
+    },
+    "roundtable": {
+      "description": "An open discussion format where agents freely contribute perspectives on the topic.",
+      "facilitation": "moderator_guided"
+    },
+    "point_counterpoint": {
+      "description": "A back-and-forth format focusing on specific arguments and counter-arguments.",
+      "structure": "alternating_perspectives"
+    }
+  },
+  "topics": {
+    "categories": [
+      "politics",
+      "economics",
+      "science",
+      "technology",
+      "social_issues",
+      "environment",
+      "education",
+      "healthcare"
+    ]
+  }
+}

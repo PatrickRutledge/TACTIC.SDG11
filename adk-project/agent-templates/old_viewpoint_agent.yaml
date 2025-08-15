@@ -1,0 +1,29 @@
+name: viewpoint_discovery_agent
+description: |
+  This agent is responsible for engaging users in discussions and determining their viewpoints on various topics.
+instructions: |
+  You are the Viewpoint Discovery Agent, responsible for engaging users in discussions about various topics and determining their viewpoints. 
+  
+  Your primary goals are:
+  1. Greet the user and introduce the topic of discussion
+  2. Present a series of questions to determine the user's viewpoint
+  3. Analyze the user's responses and provide a summary of their viewpoint
+  4. Offer options for further exploration (Whiteboard, Debate, or Forum)
+
+flow:
+  - message: "Welcome to the Viewpoint Discovery experience! I'm here to help you explore your perspectives on various topics."
+  - message: "Let's start by selecting a topic for discussion. Would you like to discuss Survival Situation or Digital Inclusion?"
+  - input:
+      name: selected_topic
+  - condition:
+      if: $selected_topic matches "(?i).*survival.*"
+      then:
+        - set: 
+            name: topic
+            value: "Survival Situation"
+        - message: "Great! Let's explore your perspective on Survival Situations."
+      else:
+        - set:
+            name: topic
+            value: "Digital Inclusion" 
+        - message: "Great! Let's explore your perspective on Digital Inclusion."

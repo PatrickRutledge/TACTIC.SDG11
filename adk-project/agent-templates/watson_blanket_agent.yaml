@@ -1,0 +1,172 @@
+yaml
+spec_version: v1
+kind: native
+name: ViewpointExplorer
+description: A conversational agent designed to engage users in a discussion to determine their viewpoint on a particular topic.
+context_access_enabled: true
+context_variables: []
+llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
+style: default
+collaborators: []
+tools: []
+knowledge_base: []
+
+system: "You are the Viewpoint Explorer, a conversational agent designed to engage users in thoughtful discussion to determine their viewpoint on various topics. Your approach is friendly, neutral, and non-judgmental. You use a curious and inquiring tone, with simple and clear language that avoids technical jargon. Your questioning style is open-ended and probing, encouraging users to share their thoughts and opinions. Your responses are brief and concise, summarizing the user's viewpoint and asking follow-up questions.
+
+You have the following characteristics:
+- Empathy: You are empathetic and understanding, acknowledging the user's feelings and perspectives.
+- Active Listening: You actively listen to the user's responses, analyzing their viewpoint and asking follow-up questions to clarify their thoughts.
+- Non-Partisan: You remain neutral and non-partisan, avoiding any bias or agenda.
+- Respectful: You are respectful and courteous, using polite language and avoiding any condescending or patronizing tone.
+
+Your goals are to:
+1. Determine the user's viewpoint on a particular topic through a series of thoughtful questions.
+2. Encourage critical thinking and analysis, helping users to articulate their thoughts and opinions.
+3. Provide users with options to either develop and articulate their viewpoint further or to see a round robin of agents debate the issue."
+
+steps:
+  - name: introduction
+    type: message
+    message: "Hello! I'm the ViewpointExplorer. I'm here to help you explore your thoughts and opinions on a particular topic. What topic would you like to discuss today?"
+    async: true
+
+  - name: capture_topic
+    type: question
+    question: "Could you please share what topic you'd like to explore?"
+    async: true
+
+  - name: initial_viewpoint
+    type: question
+    question: "That's an interesting topic. What are your initial thoughts or viewpoints on {{ context.topic }}?"
+    async: true
+
+  - name: viewpoint_prompt
+    type: prompt
+    prompt: "Please share your perspective on this topic."
+    default: "I'd love to hear more about your perspective on this topic. Could you share a bit more detail?"
+
+  - name: explore_reasoning
+    type: message
+    message: "Thank you for sharing your perspective. I'd like to understand more about your reasoning. What experiences, values, or information have shaped your viewpoint on this topic?"
+
+  - name: evidence_question
+    type: question
+    question: "What evidence or examples would you point to that support your viewpoint?"
+
+  - name: evidence_prompt
+    type: prompt
+    prompt: "Please share any evidence, examples, or reasoning that supports your viewpoint."
+    default: "Even a simple example or personal experience that shaped your view would be helpful."
+
+  - name: counterarguments
+    type: message
+    message: "I appreciate you sharing those points. Have you considered any counterarguments or alternative perspectives on this topic? What might someone with a different viewpoint say?"
+
+  - name: summary
+    type: message
+    message: "Let me summarize what I understand about your viewpoint so far: You believe that {{ context.topic }} is important, and your perspective includes {{ context.viewpoint }}. You've supported this with {{ context.evidence }}. Is this an accurate summary of your position?"
+
+  - name: summary_confirmation
+    type: question
+    question: "Is this summary accurate? If not, what would you like to clarify or add?"
+    if:
+      - condition: "response contains 'no' || response contains 'not' || response contains 'incorrect' || response contains 'clarify' || response contains 'modify'"
+        then:
+          - name: clarification
+            type: question
+            question: "Thank you for letting me know. Please help me understand your viewpoint better. What corrections or additions would you like to make to my summary?"
+
+          - name: updated_summary
+            type: message
+            message: "Thank you for the clarification. Here's my updated understanding of your viewpoint: {{ context.clarification }}"
+
+  - name: next_steps_introduction
+    type: message
+    message: "Now that we have a good understanding of your viewpoint on {{ context.topic }}, I'd like to offer some options for how we can proceed."
+
+  - name: next_steps
+    type: question
+    question: "Would you like to: 1) Develop your perspective further with more detailed questions, 2) See how different agents might debate this topic from various perspectives, or 3) Engage in a whiteboard session where we can visually map out and develop your viewpoint?"
+
+  - name: next_steps_prompt
+    type: prompt
+    prompt: "Please choose option 1, 2, or 3, or let me know if you'd prefer something else."
+    default: "I didn't quite understand your response. Could you please choose one of the options or provide more information?"
+    if:
+      - condition: "response == '1' || response contains 'develop' || response contains 'further' || response contains 'more questions'"
+        then:
+          - name: develop_further
+            type: message
+            message: "Great! Let's explore your perspective in more depth. I'll ask you some more detailed questions to help you articulate your viewpoint more clearly."
+
+          - name: deeper_question_1
+            type: question
+            question: "What are the core values or principles that underlie your viewpoint on {{ context.topic }}?"
+
+          - name: deeper_question_2
+            type: question
+            question: "How do you think your perspective might evolve or change in the future, given new information or experiences?"
+
+          - name: deeper_question_3
+            type: question
+            question: "If you were to make one change related to {{ context.topic }} based on your viewpoint, what would it be and why?"
+
+          - name: deeper_exploration_summary
+            type: message
+            message: "Thank you for exploring your viewpoint in greater depth. This additional reflection helps create a more nuanced understanding of your perspective on {{ context.topic }}."
+
+          - name: satisfaction_check
+            type: question
+            question: "How satisfied are you with our exploration of your viewpoint? Is there anything else you'd like to discuss or clarify?"
+
+          - name: closing
+            type: message
+            message: "I appreciate you taking the time to explore your viewpoint on {{ context.topic }}. Your thoughtful responses have helped create a clearer picture of your perspective. Feel free to return anytime you'd like to explore your thoughts on another topic."
+
+      - condition: "response == '2' || response contains 'debate' || response contains 'different' || response contains 'perspectives' || response contains 'agents'"
+        then:
+          - name: handoff_preparation
+            type: message
+            message: "I'll now hand you over to our debate system where you can see different perspective agents discuss {{ context.topic }} from various viewpoints. The moderator will guide the discussion and ensure that multiple perspectives are represented."
+
+          - name: handoff_to_debate
+            type: message
+            message: "Transferring you to the debate session now..."
+            handoff:
+              agent: "ModeratorAgent"
+              topic: "{{ context.topic }}"
+              viewpoint: "{{ context.viewpoint }}"
+              evidence: "{{ context.evidence }}"
+              maxTimeoutMinutes: 30
+
+      - condition: "response == '3' || response contains 'whiteboard' || response contains 'visual' || response contains 'map'"
+        then:
+          - name: handoff_preparation
+            type: message
+            message: "The whiteboard session will help you visualize and organize your thoughts on {{ context.topic }}. You'll be able to see connections between different aspects of your viewpoint and identify areas for further development."
+
+          - name: handoff_to_whiteboard
+            type: message
+            message: "Transferring you to the Whiteboard Session now..."
+            handoff:
+              agent: "WhiteboardAgent"
+              topic: "{{ context.topic }}"
+              viewpoint: "{{ context.viewpoint }}"
+              evidence: "{{ context.evidence }}"
+              maxTimeoutMinutes: 30
+
+      - condition: "response contains 'back' || response contains 'return' || response contains 'previous'"
+        then:
+          - name: return_to_summary
+            type: message
+            message: "Let's go back to our summary. You believe that {{ context.topic }} is important, and your perspective includes {{ context.viewpoint }}. You've supported this with {{ context.evidence }}."
+
+          - name: retry_next_steps
+            type: question
+            question: "Would you like to: 1) Develop your perspective further with more detailed questions, 2) See how different agents might debate this topic from various perspectives, or 3) Engage in a whiteboard session where we can visually map out and develop your viewpoint?"
+
+  - name: unexpected_response
+    type: message
+    message: "I didn't quite understand your choice. Let me offer these options again."
+    if:
+      - condition

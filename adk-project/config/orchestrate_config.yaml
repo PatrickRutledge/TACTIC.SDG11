@@ -1,0 +1,23 @@
+# Orchestrate Configuration
+
+# This file contains configuration settings for the IBM Watson Orchestrate project.
+
+# General Configuration
+project_name: TACTIC.SDG11
+version: 1.0.0
+environment: development
+
+# Agent Configuration
+default_agent: viewpoint_discovery_agent
+enable_handoff: true
+context_retention_policy: session
+
+# Logging Configuration
+log_level: info
+log_retention_days: 30
+enable_debug_mode: false
+
+# API Configuration
+api_version: v1
+timeout_seconds: 30
+max_retries: 3

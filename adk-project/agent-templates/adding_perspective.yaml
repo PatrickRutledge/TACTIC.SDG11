@@ -1,0 +1,25 @@
+yaml
+steps:
+  - name: Select Perspective
+    type: question
+    question: "Which perspective would you like to take on this issue?"
+    options:
+      - Economic Perspective
+      - Social Perspective
+      - Ethical Perspective
+      - Legal Perspective
+      - Environmental Perspective
+  - name: Analyze Issue
+    type: message
+    message: "Let's analyze the issue from the {{ selected_perspective }} perspective."
+    if:
+      - condition: "selected_perspective == 'Economic Perspective'"
+        then:
+          - name: Economic Analysis
+            type: message
+            message: "The economic implications of this issue are significant. Let's consider the potential costs and benefits."
+      - condition: "selected_perspective == 'Social Perspective'"
+        then:
+          - name: Social Analysis
+            type: message
+            message: "The social implications of this issue are far-reaching. Let's consider the potential effects on individuals and communities."

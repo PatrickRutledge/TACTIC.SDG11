@@ -1,0 +1,83 @@
+Organizing the directory structure for development and production is crucial for maintaining a clean and scalable codebase. Here's a suggested directory structure for the Orchestrate project, including the future Discovery and CloudPak agents:
+
+Development Directory Structure:
+
+adk-project/
+    agents/
+        viewpoint_discovery_agent/
+            viewpoint_discovery_agent.yaml
+            viewpoint_discovery_agent.py
+        whiteboard_agent/
+            whiteboard_agent.yaml
+            whiteboard_agent.py
+        debate_agents/
+            debate_agent_1.yaml
+            debate_agent_1.py
+            debate_agent_2.yaml
+            debate_agent_2.py
+            moderator_agent.yaml
+            moderator_agent.py
+        forum_agents/
+            forum_agent_1.yaml
+            forum_agent_1.py
+            forum_agent_2.yaml
+            forum_agent_2.py
+            forum_agent_3.yaml
+            forum_agent_3.py
+            forum_agent_4.yaml
+            forum_agent_4.py
+            forum_agent_5.yaml
+            forum_agent_5.py
+            chairman_agent.yaml
+            chairman_agent.py
+    config/
+        orchestrate_config.yaml
+        discovery_config.yaml
+        cloudpak_config.yaml
+        .env
+        chat-env.env
+        chat_port.env
+        wxflows.config.json
+    data/
+        user_data/
+        conversation_data/
+    tests/
+        unit_tests/
+        integration_tests/
+    docs/
+        agent_documentation/
+        watson_discovery_documentation/
+        watson_cloudpak_documentation/
+    README.md
+
+Other Project Components:
+    archive/               # Archived files and documentation
+    .github/workflows/     # GitHub Actions workflows
+    Node.js CLI/           # Node.js command line interface
+    python cli/            # Python command line interface
+    .gitignore             # Git ignore file
+    files.zip              # Project files archive
+
+Directory Structure Explanation:
+
+1. agents/
+   - Contains all agent implementation files (YAML configurations and Python code)
+   - Organized by scenario/experience with dedicated subdirectories
+
+2. config/
+   - Contains all configuration files for the adk project
+   - Includes environment files and orchestration configurations
+
+3. data/
+   - Stores user data and conversation history
+   - Organized to maintain data segregation and privacy
+
+4. tests/
+   - Contains all test files for the project
+   - Separated into unit tests and integration tests
+
+5. docs/
+   - Contains documentation for all components
+   - Organized by component type
+
+This directory structure provides a clean organization for your IBM Watson Orchestrate project, with appropriate separation between different agents and their configurations.

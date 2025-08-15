@@ -1,99 +1,101 @@
-# Watson Orchestrate ViewpointExplorer System
+# TACTIC.SDG11 - Viewpoint Exploration System
 
 ## Project Overview
-This project implements a sophisticated agent-based conversation system for exploring, developing, and debating viewpoints on various topics using IBM Watson Orchestrate. The system consists of multiple interconnected agents that provide users with different ways to articulate, visualize, and challenge their perspectives.
+TACTIC.SDG11 is a conversational AI solution that helps users explore their viewpoints on important topics through guided discussions, visual mapping, and structured debate using IBM Watson Orchestrate agents.
 
 ## System Architecture
 
 ### Core Agents
-- **ViewpointExplorer**: The main entry point agent that engages users in thoughtful discussion to determine their viewpoint on a topic and offers three paths for further exploration.
+- **ViewpointExplorer**: The main entry point agent that engages users in thoughtful discussion to determine their viewpoint on a topic and offers paths for further exploration.
 - **WhiteboardAgent**: Helps users visually map and develop their viewpoints through an interactive whiteboard session.
 - **ModeratorAgent**: Facilitates balanced debates between different perspective agents on the user's chosen topic.
 
 ### Perspective Agents
-- **ProgressivePerspectiveAgent**: Represents progressive perspectives focusing on social change and equality
-- **ConservativePerspectiveAgent**: Represents traditional perspectives emphasizing values of tradition and established institutions
-- **ScientificPerspectiveAgent**: Represents scientific perspectives focusing on evidence-based reasoning and data analysis
-- **EconomicPerspectiveAgent**: Represents economic perspectives analyzing issues through economic principles and market dynamics
+- **ProgressiveAgent**: Represents progressive perspectives focusing on social change and equality
+- **ConservativeAgent**: Represents traditional perspectives emphasizing values of tradition and established institutions
 
 ## Conversation Flows
 
 The ViewpointExplorer system supports multiple conversation flows:
 
-1. **Topic Exploration**: Initial conversation to determine the user's viewpoint on a chosen topic
-2. **Deeper Questions**: A path for users to develop their perspective further through detailed questioning
+1. **Topic Exploration**: Initial conversation to determine the user's viewpoint on chosen topics (Digital Inclusion or Survival Situation)
+2. **Whiteboard Session**: A path where users can visually map and organize their thoughts
 3. **Debate Session**: A path where users can observe a moderated debate on their topic
-4. **Whiteboard Session**: A path where users can visually map and organize their thoughts
+4. **Town Hall Forum**: A simulated forum discussion with multiple perspectives
+5. **Podcast**: A simulated podcast discussion of the topic
 
+## Repository Structure
+- `/adk-project/` - Watson Orchestrate agent configurations and implementation
+- `/docs/` - Project documentation including PRD and implementation guides
+- `/Node.js CLI/` and `/python cli/` - CLI tools for development and deployment
 ## Implementation Details
 
-The system is built using:
-- Watson Orchestrate Agent Development Kit (ADK)
-- YAML-based agent configurations
+- IBM Watson Orchestrate Agent Development Kit (ADK)
+- YAML-based agent configurations with steps sections
 - Structured conversation flows with branching logic
 - Inter-agent communication and handoffs
 - Context variable sharing between agents
 
-## Directory Structure
+## Key Files
 
 ```
 adk-project/
 ├── debate_agents/
-│   ├── optimized_viewpoint_explorer.yaml  # Enhanced ViewpointExplorer configuration
-│   ├── whiteboard_agent.yaml              # WhiteboardAgent configuration
-│   ├── moderator_agent.yaml               # ModeratorAgent configuration
-│   ├── progressive_agent.yaml             # ProgressivePerspectiveAgent configuration
-│   ├── conservative_agent.yaml            # ConservativePerspectiveAgent configuration
-│   ├── scientific_agent.yaml              # ScientificPerspectiveAgent configuration
-│   ├── economic_agent.yaml                # EconomicPerspectiveAgent configuration
-│   ├── test_viewpoint_explorer.py         # Test script for ViewpointExplorer agent
-│   └── README.md                          # Documentation for the debate agents
+│   ├── optimized_viewpoint_explorer.yaml  # Main ViewpointExplorer agent
+│   ├── whiteboard_agent.yaml              # WhiteboardAgent for visual mapping
+│   ├── moderator_agent.yaml               # ModeratorAgent for debates
+│   ├── progressive_agent.yaml             # Progressive perspective agent
+│   ├── conservative_agent.yaml            # Conservative perspective agent
+│   └── test_viewpoint_explorer.py         # Test script for ViewpointExplorer
+├── tools/                                 # Tool implementations for agents
+└── .env                                   # Environment configuration
 ```
 
-## Usage Instructions
+## Getting Started
 
-1. **Installation**:
+1. **Prerequisites**:
+   - IBM Watson Orchestrate Developer Edition
+   - Python 3.8+
+   - Node.js 14+
+
+2. **Installation**:
    ```bash
    # Clone the repository
-   git clone [repository-url]
+   git clone https://github.com/PatrickRutledge/TACTIC.SDG11.git
    cd tactic.sdg11
    
    # Set up virtual environment
+   cd adk-project
    python -m venv venv
    source venv/bin/activate
-   
-   # Install dependencies
-   pip install -r requirements.txt
    ```
 
-2. **Deployment**:
+3. **Deployment**:
    ```bash
    # Deploy agents to Watson Orchestrate
-   cd adk-project
-   orchestrate agents import -f debate_agents/optimized_viewpoint_explorer.yaml
-   orchestrate agents import -f debate_agents/whiteboard_agent.yaml
-   orchestrate agents import -f debate_agents/moderator_agent.yaml
+   orchestrate agents create -f debate_agents/optimized_viewpoint_explorer.yaml
+   orchestrate agents create -f debate_agents/whiteboard_agent.yaml
+   orchestrate agents create -f debate_agents/moderator_agent.yaml
    ```
 
-3. **Testing**:
-   ```bash
-   # Run test script
-   python debate_agents/test_viewpoint_explorer.py
-   ```
+## Documentation
+- [Product Requirements Document](docs/PRD.md)
+- [Implementation Plan](docs/IMPLEMENTATION_PLAN.md)
+- [Copilot Guide](docs/COPILOT_GUIDE.md)
 
 ## Project Status
 - [x] Initial agent configuration
 - [x] Enhanced ViewpointExplorer with branching paths
 - [x] WhiteboardAgent implementation
-- [x] ModeratorAgent configuration
-- [x] Testing scripts
-- [ ] Advanced reporting and analytics
-- [ ] Knowledge base integration
-- [ ] Additional perspective agents
+- [x] Repository setup
+- [ ] Agent greeting customization
+- [ ] Path issue resolution
+- [ ] Agent handoff implementation
+- [ ] Testing and validation
 
 ## Contributors
 - Patrick Rutledge
 - GitHub Copilot
 
 ## License
-[Specify license information]
+Proprietary - All rights reserved

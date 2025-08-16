@@ -1,0 +1,18 @@
+spec_version: v1
+kind: native
+name: FreshTest
+description: A fresh test agent with minimalist structure
+context_access_enabled: true
+llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
+style: default
+collaborators: []
+tools: []
+knowledge_base: []
+
+system: "You are a simple test agent."
+
+steps:
+  - name: introduction
+    type: message
+    message: "Hello! I am a fresh test agent."
+    async: true

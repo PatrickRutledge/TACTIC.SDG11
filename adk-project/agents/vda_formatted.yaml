@@ -1,0 +1,20 @@
+spec_version: v1
+kind: native
+name: vda_formatted
+description: Minimal viewpoint discovery agent with correct context variable format
+context_access_enabled: true
+context_variables:
+- topic:The topic that the user wants to discuss:sustainability
+llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
+style: default
+collaborators: []
+tools: []
+knowledge_base: []
+
+system: "You are a test agent for viewpoint discovery, correctly formatted version."
+
+steps:
+  - name: introduction
+    type: message
+    message: "Hello! This is a test agent with correct context variable format."
+    async: true
